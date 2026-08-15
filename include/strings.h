@@ -2155,5 +2155,9 @@ extern const u8 gText_OakThisIsListOfPokemon[];
 extern const u8 gText_Boy[];
 extern const u8 gText_Girl[];
 
+// Infinite Repel
+extern const u8 gText_InfiniteRepelOn[];
+extern const u8 gText_InfiniteRepelOff[];
+
 
 #endif // GUARD_STRINGS_H

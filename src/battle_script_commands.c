@@ -9694,10 +9694,10 @@ static void ComputeBallData(u32 wildMonBattler, u32 playerBattler, struct BallDa
     switch (ballId)
     {
     case BALL_GREAT:
-        ball->multiplier = 150;
+        ball->multiplier = 200;
         break;
     case BALL_ULTRA:
-        ball->multiplier = 200;
+        ball->multiplier = 300;
         break;
     case BALL_MASTER:
         ball->guaranteedCapture = TRUE;
