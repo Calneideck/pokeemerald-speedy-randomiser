@@ -167,6 +167,7 @@ enum DebugMenuTypes
     DEBUG_BASIC_MENU,
     DEBUG_FLAGS_MENU,
     DEBUG_TRAINERS_MENU,
+    DEBUG_OUTBREAK_MENU,
 };
 
 // *******************************

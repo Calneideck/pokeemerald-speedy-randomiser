@@ -1188,7 +1188,7 @@ static u8 GetMaxLevelOfSpeciesInWildTable(const struct WildPokemon *wildMon, enu
         numMon = NUM_ROCK_SMASH_MONS_ENCOUNTER_SLOTS;
         break;
     case WILD_AREA_FISHING:
-        numMon = FISH_WILD_COUNT;
+        numMon = NUM_FISHING_MONS_ENCOUNTER_SLOTS;
         break;
     default:
     case WILD_AREA_HIDDEN:

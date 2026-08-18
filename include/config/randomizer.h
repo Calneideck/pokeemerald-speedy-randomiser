@@ -4,7 +4,7 @@
 // Global control. If FALSE, no randomizer functionality will be enabled.
 // If this is TRUE, that doesn't necessarily mean that a particular part of the randomizer
 // will be enabled.
-#define RANDOMIZER_AVAILABLE                   FALSE
+#define RANDOMIZER_AVAILABLE                   TRUE
 
 #if RANDOMIZER_AVAILABLE == TRUE
 
@@ -18,7 +18,7 @@
 
 #define RANDOMIZER_MAX_TM           ITEM_TM50
 
-#define RANDOMIZER_MON_MODE         MON_RANDOM
+#define RANDOMIZER_MON_MODE         MON_RANDOM_BST
 
 // Vars and features
 
@@ -28,10 +28,10 @@
 // If defined and set to TRUE, the feature will always be enabled.
 // If defined and set to FALSE, the feature will always be disabled.
 #define RANDOMIZE_WILD_MON      TRUE
-#define RANDOMIZE_FIELD_ITEMS   FALSE
+#define RANDOMIZE_FIELD_ITEMS   TRUE
 #define RANDOMIZE_TRAINER_MON   TRUE
 #define RANDOMIZE_FIXED_MON     TRUE
-#define RANDOMIZE_STARTERS      FALSE
+#define RANDOMIZE_STARTERS      TRUE
 #define RANDOMIZE_LEARNSET      TRUE
 #define RANDOMIZE_ABILITIES     TRUE
 
