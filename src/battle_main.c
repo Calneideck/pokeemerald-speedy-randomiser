@@ -3176,6 +3176,8 @@ void SwitchInClearSetData(enum BattlerId battler, struct Volatiles *volatilesCop
             gBattleMons[i].volatiles.syrupBomb = FALSE;
         if (gBattleMons[i].volatiles.octolock && gBattleMons[i].volatiles.octolockedBy == battler)
             gBattleMons[i].volatiles.octolock = FALSE;
+        if (gBattleMons[i].volatiles.skyDropTarget == battler + 1)
+            gBattleMons[i].volatiles.skyDropTarget = 0;
     }
 
     gActionSelectionCursor[battler] = 0;
@@ -3292,6 +3294,8 @@ void FaintClearSetData(enum BattlerId battler)
             gBattleMons[i].volatiles.syrupBomb = FALSE;
         if (gBattleMons[i].volatiles.octolock && gBattleMons[i].volatiles.octolockedBy == battler)
             gBattleMons[i].volatiles.octolock = FALSE;
+        if (gBattleMons[i].volatiles.skyDropTarget == battler + 1)
+            gBattleMons[i].volatiles.skyDropTarget = 0;
     }
 
     gActionSelectionCursor[battler] = 0;
