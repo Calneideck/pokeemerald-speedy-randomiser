@@ -3898,6 +3898,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
             gOverworldPalette_Shedinja,
             gShinyOverworldPalette_Shedinja
         )
+        .randomizerMode = MON_RANDOMIZER_INVALID,
         .levelUpLearnset = sShedinjaLevelUpLearnset,
         .teachableLearnset = sShedinjaTeachableLearnset,
     },
