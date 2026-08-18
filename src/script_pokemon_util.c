@@ -476,12 +476,19 @@ static u32 ScriptGiveMonParameterized(u8 side, u8 slot, enum Species species, u8
     return MON_GIVEN_TO_PARTY;
 }
 
-u32 ScriptGiveMon(enum Species species, u8 level, enum Item item)
+u32 ScriptGiveMon(enum Species species, u8 level, enum Item item, bool8 starter)
 {
     struct Pokemon mon;
     u8 heldItem[2];
 
     CreateRandomMon(&mon, species, level);
+
+    if (starter == TRUE)
+    {
+        SetBoxMonPerfectIVs(&mon.box, 5);
+        CalculateMonStats(&mon);
+    }
+
     if (item)
     {
         heldItem[0] = item;

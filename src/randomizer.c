@@ -224,13 +224,12 @@ u16 RandomizeFoundItem(u16 itemId, u8 mapNum, u8 mapGroup, u8 localId)
 
     // Randomize TMs to TMs. Because HMs shouldn't be randomized, we can assume
     // this is a TM.
-    if (IsItemTMHM(itemId))
-        return RandomizerNextRange(&state, RANDOMIZER_MAX_TM - ITEM_TM01 + 1) + ITEM_TM01;
+    // if (IsItemTMHM(itemId))
+    //     return RandomizerNextRange(&state, RANDOMIZER_MAX_TM - ITEM_TM01 + 1) + ITEM_TM01;
 
-    // Randomize everything else to everything else.
     do {
         result = sRandomizerItemWhitelist[RandomizerNextRange(&state, ITEM_WHITELIST_SIZE)];
-    } while(!ShouldRandomizeItem(result) || IsItemTMHM(result));
+    } while(!ShouldRandomizeItem(result));
 
     return result;
 
