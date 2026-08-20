@@ -2159,5 +2159,7 @@ extern const u8 gText_Girl[];
 extern const u8 gText_InfiniteRepelOn[];
 extern const u8 gText_InfiniteRepelOff[];
 
+// Porta Heal
+extern const u8 gText_PortaHeal[];
 
 #endif // GUARD_STRINGS_H

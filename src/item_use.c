@@ -48,6 +48,7 @@
 #include "constants/item_effects.h"
 #include "constants/items.h"
 #include "constants/songs.h"
+#include "script_pokemon_util.h"
 
 static void SetUpItemUseCallback(u8);
 static void FieldCB_UseItemOnField(void);
@@ -994,6 +995,16 @@ void ItemUseOutOfBattle_InfiniteRepel(u8 taskId)
         else
             DisplayItemMessage(taskId, 1, gText_InfiniteRepelOff, CloseItemMessage);
     }
+}
+
+void ItemUseOutOfBattle_PortaHeal(u8 taskId)
+{
+    PlaySE(SE_SHINY);
+    HealPlayerParty();
+    if (gTasks[taskId].tUsingRegisteredKeyItem)
+        DisplayItemMessageOnField(taskId, gText_PortaHeal, Task_CloseCantUseKeyItemMessage);
+    else
+        DisplayItemMessage(taskId, 1, gText_PortaHeal, CloseItemMessage);
 }
 
 static void Task_StartUseRepel(u8 taskId)

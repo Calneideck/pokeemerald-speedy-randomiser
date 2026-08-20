@@ -1169,6 +1169,7 @@ const u8 gText_ExpShareOn[] = _("The Exp. Share has been turned on.{PAUSE_UNTIL_
 const u8 gText_ExpShareOff[] = _("The Exp. Share has been turned off.{PAUSE_UNTIL_PRESS}");
 const u8 gText_InfiniteRepelOn[] = _("The Infinite Repel is now on.{PAUSE_UNTIL_PRESS}");
 const u8 gText_InfiniteRepelOff[] = _("The Infinite Repel is now off.{PAUSE_UNTIL_PRESS}");
+const u8 gText_PortaHeal[] = _("Your party has been healed!{PAUSE_UNTIL_PRESS}");
 ALIGNED(4) const u8 gText_Ghost[] = _("GHOST");
 const u8 gText_Boulderbadge[] = _("BOULDERBADGE");
 const u8 gText_Cascadebadge[] = _("CASCADEBADGE");

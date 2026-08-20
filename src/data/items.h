@@ -2342,6 +2342,20 @@ const struct ItemInfo gItemsInfo[] =
         .iconPalette = gItemIconPalette_MaxRepel,
     },
 
+    [ITEM_PORTA_HEAL] =
+    {
+        .name = ITEM_NAME("Porta Heal"),
+        .price = 0,
+        .importance = 1,
+        .description = COMPOUND_STRING("Heals your party."),
+        .pocket = POCKET_KEY_ITEMS,
+        .sortType = ITEM_TYPE_FIELD_USE,
+        .type = ITEM_USE_BAG_MENU,
+        .fieldUseFunc = ItemUseOutOfBattle_PortaHeal,
+        .iconPic = gItemIcon_StatusHeal,
+        .iconPalette = gItemIconPalette_BurnHeal,
+    },
+
     [ITEM_LURE] =
     {
         .name = ITEM_NAME("Lure"),

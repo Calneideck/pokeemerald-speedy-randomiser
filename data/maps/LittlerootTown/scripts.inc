@@ -901,6 +901,7 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	msgbox LittlerootTown_Text_ExplainRunningShoes, MSGBOX_DEFAULT
 	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
 	giveitem ITEM_INFINITE_REPEL
+	giveitem ITEM_PORTA_HEAL
 	closemessage
 	delay 30
 	return
