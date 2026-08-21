@@ -155,7 +155,9 @@ LittlerootTown_EventScript_GoInsideWithMom::
 	applymovement LOCALID_PLAYER, LittlerootTown_Movement_PlayerEnterHouse
 	waitmovement 0
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_MOM_OUTSIDE
-	setvar VAR_LITTLEROOT_INTRO_STATE, 3
+    setvar VAR_LITTLEROOT_TOWN_STATE, 2
+	setvar VAR_LITTLEROOT_INTRO_STATE, 7
+	setvar VAR_LITTLEROOT_RIVAL_STATE, 3
 	hideplayer
 	closedoor VAR_0x8004, VAR_0x8005
 	waitdooranim
