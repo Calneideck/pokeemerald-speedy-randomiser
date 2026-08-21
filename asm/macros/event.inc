@@ -2146,9 +2146,10 @@
 	@ If the player doesn't have space for all the items then as many are added as possible, the
 	@ message indicates there is no room, and VAR_RESULT is set to FALSE.
 	@ Otherwise VAR_RESULT is set to TRUE, and the message indicates they have received the item(s).
-	.macro giveitem item:req, amount=1
+	.macro giveitem item:req, amount=1, random=TRUE
 	setorcopyvar VAR_0x8000, \item
 	setorcopyvar VAR_0x8001, \amount
+	setorcopyvar VAR_0x8005, \random
 	callstd STD_OBTAIN_ITEM
 	.endm
 

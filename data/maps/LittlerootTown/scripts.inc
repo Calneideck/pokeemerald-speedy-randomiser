@@ -902,8 +902,8 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	msgbox LittlerootTown_Text_ComeHomeIfAnythingHappens, MSGBOX_DEFAULT
 	giveitem ITEM_INFINITE_REPEL
 	giveitem ITEM_PORTA_HEAL
-    giveitem ITEM_POKE_BALL, 50
-    giveitem ITEM_GREAT_BALL, 10
+    giveitem ITEM_POKE_BALL, 50, FALSE
+    giveitem ITEM_GREAT_BALL, 10, FALSE
 	closemessage
 	delay 30
 	return

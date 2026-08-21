@@ -2,11 +2,15 @@
 .set AMOUNT, VAR_0x8001
 
 Std_ObtainItem::
-	callnative FindItemRandomize_NativeCall
+	call_if_eq VAR_0x8005, TRUE, EventScript_ObtainItemRandom
 	copyvar VAR_0x8006, ITEMID
 	additem ITEMID, AMOUNT
 	copyvar VAR_0x8007, VAR_RESULT
 	call EventScript_ObtainItemMessage
+	return
+
+EventScript_ObtainItemRandom::
+	callnative FindItemRandomize_NativeCall
 	return
 
 EventScript_ObtainItemMessage::
