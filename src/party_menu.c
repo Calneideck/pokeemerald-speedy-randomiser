@@ -5622,7 +5622,7 @@ static void Task_LearnedMove(u8 taskId)
     StringExpandPlaceholders(gStringVar4, gText_PkmnLearnedMove3);
     DisplayPartyMenuMessage(gStringVar4, TRUE);
     ScheduleBgCopyTilemapToVram(2);
-    gTasks[taskId].func = Task_DoLearnedMoveFanfareAfterText;
+    gTasks[taskId].func = Task_LearnNextMoveOrClosePartyMenu;
 }
 
 static void Task_DoLearnedMoveFanfareAfterText(u8 taskId)
@@ -6154,7 +6154,7 @@ static void DisplayMonLearnedMove(u8 taskId, u16 move)
     DisplayPartyMenuMessage(gStringVar4, TRUE);
     ScheduleBgCopyTilemapToVram(2);
     gPartyMenu.data1 = move;
-    gTasks[taskId].func = Task_DoLearnedMoveFanfareAfterText;
+    gTasks[taskId].func = Task_LearnNextMoveOrClosePartyMenu;
 }
 
 static void BufferMonStatsToTaskData(struct Pokemon *mon, s16 *data)

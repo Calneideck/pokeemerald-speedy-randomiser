@@ -696,9 +696,7 @@ DewfordTown_Text_GettingItchToFish:
 	.string "Are you getting the itch to fish?$"
 
 DewfordTown_Text_GiveYouOneOfMyRods:
-	.string "I hear you, and I like what\n"
-	.string "you're saying!\p"
-	.string "I'll give you one of my fishing RODS.$"
+	.string "Here! Take this!$"
 
 DewfordTown_Text_ThrowInFishingAdvice:
 	.string "And, as an added bonus, I'll even throw\n"
@@ -721,7 +719,6 @@ DewfordTown_Text_HowsYourFishing:
 	.string "How's your fishing?$"
 
 DewfordTown_Text_GreatHaulInSomeBigOnes:
-	.string "Is that right! That's great!\n"
 	.string "Haul in some big ones!$"
 
 DewfordTown_Text_FishingAdvice:
