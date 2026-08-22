@@ -652,8 +652,8 @@ Route104_Text_LandedInDewfordDeliverLetter:
 	.string "LETTER to, who was it now, STEVEN!$"
 
 DewfordTown_Text_SetSailBackToPetalburg:
-	.string "MR. BRINEY: Have you delivered your\n"
-	.string "LETTER?\p"
+	.string "MR. BRINEY: Have you beat\n"
+	.string "the Dewford gym?\p"
 	.string "Or were you meaning to sail back to\n"
 	.string "PETALBURG?$"
 

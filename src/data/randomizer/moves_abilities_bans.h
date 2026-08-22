@@ -12,6 +12,7 @@ const enum Move RandomizerMovesBans[] = {
 	MOVE_DOUBLE_TEAM,
 	MOVE_LIGHT_OF_RUIN,
 	MOVE_PLASMA_FISTS,
+    MOVE_DESTINY_BOND,
 };
 
 // Bans abilities from the randomizer
@@ -19,5 +20,4 @@ const enum Ability RandomizerAbilitiesBans[] = {
 	ABILITY_HUGE_POWER,
 	ABILITY_PURE_POWER,
 	ABILITY_WONDER_GUARD,
-	ABILITY_SPEED_BOOST,
 };
