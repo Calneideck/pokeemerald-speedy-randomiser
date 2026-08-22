@@ -3,7 +3,6 @@
   "name": "GraniteCave_1F",
   "layout": "LAYOUT_GRANITE_CAVE_1F",
   "music": "MUS_PETALBURG_WOODS",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_GRANITE_CAVE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -58,13 +57,6 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 17,
-      "y": 11,
-      "elevation": 3,
-      "dest_map": "MAP_GRANITE_CAVE_B1F",
-      "dest_warp_id": "1"
-    },
-    {
       "x": 5,
       "y": 10,
       "elevation": 3,
@@ -73,5 +65,6 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }
