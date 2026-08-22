@@ -1708,6 +1708,8 @@ bool8 ScrCmd_message(struct ScriptContext *ctx)
 
 bool8 ScrCmd_pokenavcall(struct ScriptContext *ctx)
 {
+    return FALSE;
+
     const u8 *msg = (const u8 *)ScriptReadWord(ctx);
 
     Script_RequestEffects(SCREFF_V1 | SCREFF_HARDWARE);
