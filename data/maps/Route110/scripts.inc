@@ -458,7 +458,7 @@ Route110_EventScript_BrendanDefeated::
 	end
 
 Route110_EventScript_GiveItemfinder::
-	giveitem ITEM_DOWSING_MACHINE
+	giveitem ITEM_POTION
 	return
 
 Route110_EventScript_RivalExit::
@@ -946,8 +946,8 @@ Route110_Text_TrainerTipsRegisterItems:
 	.string "by pressing SELECT.$"
 
 Route110_Text_TrickHouseSign:
-	.string "“Three steps {RIGHT_ARROW} and two steps {UP_ARROW}\n"
-	.string "to reach the wondrous TRICK HOUSE.”$"
+	.string "TRICK HOUSE closed\n"
+	.string "for renovations.$"
 
 Route110_Text_BestRecord:
 	.string "THE BEST RECORD TO DATE…\p"
