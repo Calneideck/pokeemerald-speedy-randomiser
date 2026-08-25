@@ -5118,6 +5118,9 @@ u8 CanLearnTeachableMove(enum Species species, enum Move move)
     const u16 *teachableLearnset = GetSpeciesTeachableLearnset(species);
     if (species == SPECIES_EGG)
         return FALSE;
+#if RANDOMIZER_AVAILABLE == TRUE && RANDOMIZE_TM_MOVES == TRUE
+    return TRUE;
+#endif
     for (u32 i = 0; teachableLearnset[i] != MOVE_UNAVAILABLE; i++)
     {
         if (teachableLearnset[i] == move)

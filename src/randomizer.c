@@ -14,6 +14,10 @@ u16 RandomizeAbility(u16 species, u16 ability, u8 abilityNum){
     return ability;
 }
 
+u16 GetRandomizedTMMove(u16 tmIndex, u16 move){
+    return move;
+}
+
 struct TrainerMon RandomizeTrainerMon(const struct Trainer* trainer, u8 monsCount, u8 slot, u16 baseSeed){
     return trainer->party[slot];
 }
@@ -821,6 +825,53 @@ u16 RandomizeMove(u16 species, u16 move, u16 level) {
     return randomizedMove;
 }
 
+EWRAM_DATA static u16 sRandomizedTMMoves[NUM_TECHNICAL_MACHINES + 1] = {0};
+EWRAM_DATA static u32 sLastTMRandomizerSeed = 0;
+EWRAM_DATA static bool8 sTMMovesBuilt = FALSE;
+
+// Draws each TM from one continuing stream so no two TMs share a move.
+static void BuildRandomizedTMMoves(void)
+{
+    u32 seenMoveBitVector[(MOVES_COUNT - 1) / 32 + 1] = {0};
+    u32 index;
+
+    for (index = 1; index <= NUM_TECHNICAL_MACHINES; index++)
+    {
+        struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_TM_MOVE, index, 0);
+        while (TRUE)
+        {
+            u16 move = (u16) RandomizerNextRange(&state, MOVES_COUNT - 1) + 1;
+            u32 wordIndex = move / 32;
+            u32 bitIndex = move & 31;
+
+            if (!isMoveAllowed(move) || (seenMoveBitVector[wordIndex] & (1u << bitIndex)))
+                continue;
+
+            seenMoveBitVector[wordIndex] |= 1u << bitIndex;
+            sRandomizedTMMoves[index] = move;
+            break;
+        }
+    }
+
+    sLastTMRandomizerSeed = GetRandomizerSeed();
+    sTMMovesBuilt = TRUE;
+}
+
+u16 GetRandomizedTMMove(u16 tmIndex, u16 move)
+{
+    #if RANDOMIZE_TM_MOVES != TRUE
+        return move;
+    #endif
+
+    if (tmIndex == 0 || tmIndex > NUM_TECHNICAL_MACHINES)
+        return move;
+
+    if (!sTMMovesBuilt || sLastTMRandomizerSeed != GetRandomizerSeed())
+        BuildRandomizedTMMoves();
+
+    return sRandomizedTMMoves[tmIndex];
+}
+
 bool8 isAbilityAllowed(u16 ability) {
     for (u32 i = 0; i < ARRAY_COUNT(RandomizerAbilitiesBans); i++){
         if (ability == RandomizerAbilitiesBans[i]){
@@ -1001,6 +1052,8 @@ u16 RandomizeStarter(u16 starterSlot, const u16* originalStarters)
 
         GetUniqueMonList(RANDOMIZER_REASON_STARTER, RANDOMIZER_MON_MODE,
             starterHash, 0, 3, originalStarters, sRandomizedStarters);
+
+        sLastStarterRandomizerSeed = GetRandomizerSeed();
     }
     return sRandomizedStarters[starterSlot];
 }

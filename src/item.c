@@ -15,6 +15,7 @@
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "graphics.h"
+#include "randomizer.h"
 #include "shop_criteria.h"
 #include "constants/battle.h"
 #include "constants/items.h"
@@ -62,6 +63,24 @@ const struct TmHmIndexKey gTMHMItemMoveIds[NUM_ALL_MACHINES + 1] =
 
 #undef UNPACK_TM_ITEM_ID
 #undef UNPACK_HM_ITEM_ID
+
+enum Move GetTMHMMoveId(enum TMHMIndex index)
+{
+    return GetRandomizedTMMove(index, gTMHMItemMoveIds[index].moveId);
+}
+
+enum Item GetTMHMItemIdFromMoveId(enum Move move)
+{
+    if (move == MOVE_NONE)
+        return ITEM_NONE;
+
+    for (enum TMHMIndex i = 1; i <= NUM_ALL_MACHINES; i++)
+    {
+        if (GetTMHMMoveId(i) == move)
+            return gTMHMItemMoveIds[i].itemId;
+    }
+    return ITEM_NONE;
+}
 
 static inline struct ItemSlot NONNULL BagPocket_GetSlotDataGeneric(struct BagPocket *pocket, u32 pocketPos)
 {

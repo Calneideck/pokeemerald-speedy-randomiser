@@ -24,6 +24,7 @@ enum RandomizerReason
     RANDOMIZER_REASON_FIELD_ITEM,
     RANDOMIZER_REASON_STARTER,
     RANDOMIZER_REASON_ABILITY,
+    RANDOMIZER_REASON_TM_MOVE,
 };
 
 enum RandomizerSpeciesMode {
@@ -67,5 +68,6 @@ u16 RandomizeMon(enum RandomizerReason reason, enum RandomizerSpeciesMode mode, 
 u16 RandomizeMove(u16 species, u16 move, u16 level);
 struct TrainerMon RandomizeTrainerMon(const struct Trainer* trainer, u8 monsCount, u8 slot, u16 baseSeed);
 u16 RandomizeAbility(u16 species, u16 ability, u8 abilityNum);
+u16 GetRandomizedTMMove(u16 tmIndex, u16 move);
 
 #endif // GUARD_RANDOMIZER_H 
