@@ -66,6 +66,6 @@ void PreloadRandomizationTables(void);
 u16 RandomizeMon(enum RandomizerReason reason, enum RandomizerSpeciesMode mode, u32 seed, u16 species);
 u16 RandomizeMove(u16 species, u16 move, u16 level);
 struct TrainerMon RandomizeTrainerMon(const struct Trainer* trainer, u8 monsCount, u8 slot, u16 baseSeed);
-u16 RandomizeAbility(u16 species, u16 ability);
+u16 RandomizeAbility(u16 species, u16 ability, u8 abilityNum);
 
 #endif // GUARD_RANDOMIZER_H 

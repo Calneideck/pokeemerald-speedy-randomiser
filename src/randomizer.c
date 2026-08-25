@@ -10,7 +10,7 @@ u16 RandomizeMove(u16 species, u16 move, u16 level){
     return move;
 }
 
-u16 RandomizeAbility(u16 species, u16 ability){
+u16 RandomizeAbility(u16 species, u16 ability, u8 abilityNum){
     return ability;
 }
 
@@ -830,17 +830,71 @@ bool8 isAbilityAllowed(u16 ability) {
     return TRUE;
 }
 
-u16 RandomizeAbility(u16 species, u16 ability){
+EWRAM_DATA static u16 sPreEvolutions[RANDOMIZER_SPECIES_COUNT] = {0};
+EWRAM_DATA static bool8 sPreEvolutionsBuilt = FALSE;
+
+// Records the immediate pre-evolution of every species in a single forward pass.
+static void BuildPreEvolutionTable(void)
+{
+    u32 i, j;
+
+    memset(sPreEvolutions, 0, sizeof(sPreEvolutions));
+
+    for (i = 0; i < RANDOMIZER_SPECIES_COUNT; i++)
+    {
+        const struct Evolution *evolutions;
+
+        if (!IsSpeciesPermitted(i))
+            continue;
+
+        evolutions = GetSpeciesEvolutions(i);
+        if (evolutions == NULL)
+            continue;
+
+        for (j = 0; evolutions[j].method != EVOLUTIONS_END; j++)
+        {
+            u16 target = evolutions[j].targetSpecies;
+            if (target < RANDOMIZER_SPECIES_COUNT && sPreEvolutions[target] == SPECIES_NONE)
+                sPreEvolutions[target] = i;
+        }
+    }
+
+    sPreEvolutionsBuilt = TRUE;
+}
+
+static u16 GetEvolutionFamilyRoot(u16 species)
+{
+    if (!sPreEvolutionsBuilt)
+        BuildPreEvolutionTable();
+
+    for (u32 i = 0; i < RANDOMIZER_MAX_EVO_STAGES; i++)
+    {
+        u16 preEvolution;
+
+        if (species >= RANDOMIZER_SPECIES_COUNT)
+            break;
+
+        preEvolution = sPreEvolutions[species];
+        if (preEvolution == SPECIES_NONE)
+            break;
+
+        species = preEvolution;
+    }
+
+    return species;
+}
+
+u16 RandomizeAbility(u16 species, u16 ability, u8 abilityNum){
     #if RANDOMIZE_ABILITIES != TRUE
         return ability;
     #endif
-    // We need to create a very stable seed that will always
-    // return the same thing for the same pokemon
-    struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_ABILITY, species, ability);
+    // Seeding on the family root and the stored slot keeps the ability through evolution.
+    u16 rootSpecies = GetEvolutionFamilyRoot(species);
+    struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_ABILITY, rootSpecies, abilityNum);
     u16 randomizedAbility = (u16) RandomizerNextRange(&state, ABILITIES_COUNT);
     u8 i = 0;
     while (!isAbilityAllowed(randomizedAbility)){
-        state = RandomizerRandSeed(RANDOMIZER_REASON_ABILITY, ((u32) ++i << 24) | (u32) species, ability);
+        state = RandomizerRandSeed(RANDOMIZER_REASON_ABILITY, ((u32) ++i << 24) | (u32) rootSpecies, abilityNum);
         randomizedAbility = (u16) RandomizerNextRange(&state, ABILITIES_COUNT);
     }
     return randomizedAbility;
