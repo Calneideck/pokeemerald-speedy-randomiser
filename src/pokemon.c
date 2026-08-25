@@ -3302,12 +3302,34 @@ u32 GetSpeciesBaseStatTotal(enum Species species)
     return total;
 }
 
-const struct LevelUpMove *GetSpeciesLevelUpLearnset(enum Species species)
+// Every species uses this schedule. RandomizeMove() seeds on species + base move + level,
+// so the levels stay identical while the rolled moves differ per species.
+static const struct LevelUpMove sUniformLevelUpLearnset[] =
 {
-    const struct LevelUpMove *learnset = gSpeciesInfo[SanitizeSpeciesId(species)].levelUpLearnset;
-    if (learnset == NULL)
-        return gSpeciesInfo[SPECIES_NONE].levelUpLearnset;
-    return learnset;
+    {.move = MOVE_TACKLE,       .level =  1},
+    {.move = MOVE_GROWL,        .level =  1},
+    {.move = MOVE_QUICK_ATTACK, .level =  1},
+    {.move = MOVE_EMBER,        .level = 19},
+    {.move = MOVE_WATER_GUN,    .level = 19},
+    {.move = MOVE_VINE_WHIP,    .level = 24},
+    {.move = MOVE_BITE,         .level = 24},
+    {.move = MOVE_SWIFT,        .level = 29},
+    {.move = MOVE_HEADBUTT,     .level = 31},
+    {.move = MOVE_SCREECH,      .level = 31},
+    {.move = MOVE_SLASH,        .level = 33},
+    {.move = MOVE_BODY_SLAM,    .level = 33},
+    {.move = MOVE_TAKE_DOWN,    .level = 42},
+    {.move = MOVE_FLAMETHROWER, .level = 50},
+    {.move = MOVE_CRUNCH,       .level = 50},
+    {.move = MOVE_EARTHQUAKE,   .level = 63},
+    {.move = MOVE_DOUBLE_EDGE,  .level = 63},
+    {.move = MOVE_POUND,        .level = 63},
+    {.move = LEVEL_UP_MOVE_END, .level =  0},
+};
+
+const struct LevelUpMove *GetSpeciesLevelUpLearnset(enum Species species UNUSED)
+{
+    return sUniformLevelUpLearnset;
 }
 
 const u16 *GetSpeciesTeachableLearnset(enum Species species)

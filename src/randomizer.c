@@ -46,6 +46,7 @@ void FindHiddenItemRandomize_NativeCall(struct ScriptContext *ctx){}
 #include "event_data.h"
 #include "field_control_avatar.h"
 #include "pokemon.h"
+#include "move.h"
 #include "script.h"
 #include "data.h"
 #include "string_util.h"
@@ -789,6 +790,18 @@ bool8 isMoveAllowed(u16 move) {
     return TRUE;
 }
 
+// Slots seeded with these base moves must roll a move matching one of the species' types.
+static inline bool8 ShouldMatchSpeciesType(u16 move){
+    return move == MOVE_TACKLE || move == MOVE_EMBER
+        || move == MOVE_VINE_WHIP || move == MOVE_HEADBUTT
+        || move == MOVE_TAKE_DOWN || move == MOVE_EARTHQUAKE;
+}
+
+static inline bool8 DoesMoveMatchSpeciesType(u16 species, u16 move){
+    enum Type moveType = GetMoveType(move);
+    return moveType == GetSpeciesType(species, 0) || moveType == GetSpeciesType(species, 1);
+}
+
 u16 RandomizeMove(u16 species, u16 move, u16 level) {
     #if RANDOMIZE_LEARNSET != TRUE
         return move;
@@ -797,10 +810,11 @@ u16 RandomizeMove(u16 species, u16 move, u16 level) {
     // We need to create a very stable seed that will always
     // return the same thing for the same pokemon at the same level
     const u8 minIndex = 1;
+    bool8 requireSpeciesType = ShouldMatchSpeciesType(move);
     struct Sfc32State state = RandomizerRandSeed(RANDOMIZER_REASON_LEARNSET, species, ((u32) move << 16) | (u32) level);
     u16 randomizedMove = (u16) RandomizerNextRange(&state, MOVES_COUNT - minIndex + 1) + minIndex;
     u8 i = 0;
-    while (!isMoveAllowed(randomizedMove)){
+    while (!isMoveAllowed(randomizedMove) || (requireSpeciesType && !DoesMoveMatchSpeciesType(species, randomizedMove))){
         state = RandomizerRandSeed(RANDOMIZER_REASON_LEARNSET, ((u32) ++i << 24) | (u32) species, ((u32) move << 16) | (u32) level);
         randomizedMove = (u16) RandomizerNextRange(&state, MOVES_COUNT - minIndex + 1) + minIndex;
     }
