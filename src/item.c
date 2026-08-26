@@ -12,6 +12,7 @@
 #include "strings.h"
 #include "load_save.h"
 #include "item_use.h"
+#include "move.h"
 #include "battle_pyramid.h"
 #include "battle_pyramid_bag.h"
 #include "graphics.h"
@@ -875,7 +876,11 @@ u32 GetItemHoldEffectParam(enum Item itemId)
 
 const u8 *GetItemDescription(enum Item itemId)
 {
-    return gItemsInfo[SanitizeItemId(itemId)].description;
+    itemId = SanitizeItemId(itemId);
+    // TM/HM descriptions are the move's, so they must track randomized TM moves.
+    if (GetItemTMHMIndex(itemId) != 0)
+        return GetMoveDescription(GetItemTMHMMoveId(itemId));
+    return gItemsInfo[itemId].description;
 }
 
 u8 GetItemImportance(enum Item itemId)

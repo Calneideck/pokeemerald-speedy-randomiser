@@ -273,18 +273,18 @@ static const struct MenuAction MultichoiceList_GameCornerDolls[] =
 
 static const struct MenuAction MultichoiceList_GameCornerTMs[] =
 {
-    {COMPOUND_STRING("TM32{CLEAR_TO 72}1,500 COINS")},
-    {COMPOUND_STRING("TM29{CLEAR_TO 72}3,500 COINS")},
-    {COMPOUND_STRING("TM35{CLEAR_TO 72}4,000 COINS")},
-    {COMPOUND_STRING("TM24{CLEAR_TO 72}4,000 COINS")},
-    {COMPOUND_STRING("TM13{CLEAR_TO 72}4,000 COINS")},
+    {COMPOUND_STRING("TM32{CLEAR_TO 72}1 COIN")},
+    {COMPOUND_STRING("TM29{CLEAR_TO 72}1 COIN")},
+    {COMPOUND_STRING("TM35{CLEAR_TO 72}1 COIN")},
+    {COMPOUND_STRING("TM24{CLEAR_TO 72}1 COIN")},
+    {COMPOUND_STRING("TM13{CLEAR_TO 72}1 COIN")},
     {gText_Exit},
 };
 
 static const struct MenuAction MultichoiceList_GameCornerCoins[] =
 {
-    {COMPOUND_STRING("  50 COINS    ¥1,000")},
-    {COMPOUND_STRING("500 COINS  ¥10,000")},
+    {COMPOUND_STRING("  50 COINS    ¥10")},
+    {COMPOUND_STRING("500 COINS  ¥100")},
     {gText_Exit},
 };
 
