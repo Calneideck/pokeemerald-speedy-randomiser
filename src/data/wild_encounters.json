@@ -1041,63 +1041,63 @@
             "encounter_rate": 20,
             "mons": [
               {
-                "min_level": 15,
-                "max_level": 15,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 15,
-                "max_level": 15,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_MARILL"
               },
               {
-                "min_level": 14,
-                "max_level": 14,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 14,
-                "max_level": 14,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 14,
-                "max_level": 14,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_MARILL"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_MARILL"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               },
               {
-                "min_level": 16,
-                "max_level": 16,
+                "min_level": 22,
+                "max_level": 22,
                 "species": "SPECIES_NUMEL"
               }
             ]

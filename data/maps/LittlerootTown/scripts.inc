@@ -906,6 +906,7 @@ LittlerootTown_EventScript_GiveRunningShoes::
 	giveitem ITEM_PORTA_HEAL
     giveitem ITEM_POKE_BALL, 50, FALSE
     giveitem ITEM_GREAT_BALL, 10, FALSE
+    giveitem ITEM_BIG_NUGGET, 99, FALSE
 	closemessage
 	delay 30
 	return
