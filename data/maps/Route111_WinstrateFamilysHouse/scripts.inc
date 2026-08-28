@@ -56,6 +56,27 @@ Route111_WinstrateFamilysHouse_EventScript_FaceOriginalDirection::
 	release
 	end
 
+Route111_WinstrateFamilysHouse_EventScript_Clerk::
+	lock
+	faceplayer
+	message gText_HowMayIServeYou
+	waitmessage
+	pokemart Route111_WinstrateFamilysHouse_Pokemart
+	msgbox gText_PleaseComeAgain, MSGBOX_DEFAULT
+	release
+	end
+
+	.align 2
+Route111_WinstrateFamilysHouse_Pokemart:
+	.2byte ITEM_WATER_STONE
+	.2byte ITEM_LEAF_STONE
+	.2byte ITEM_FIRE_STONE
+	.2byte ITEM_THUNDER_STONE
+	.2byte ITEM_ICE_STONE
+	.2byte ITEM_MOON_STONE
+	.2byte ITEM_SUN_STONE
+	pokemartlistend
+
 Route111_WinstrateFamilysHouse_Text_MySonIsStrongerThanYou:
 	.string "You're the first TRAINER I've seen who\n"
 	.string "deploys POKéMON so masterfully.\p"

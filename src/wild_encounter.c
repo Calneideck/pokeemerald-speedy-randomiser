@@ -842,8 +842,9 @@ void RockSmashWildEncounter(void)
         {
             gSpecialVar_Result = FALSE;
         }
-        else if (WildEncounterCheck(wildPokemonInfo->encounterRate, TRUE) == TRUE
-         && TryGenerateWildMon(wildPokemonInfo, WILD_AREA_ROCKS, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
+        // else if (WildEncounterCheck(wildPokemonInfo->encounterRate, TRUE) == TRUE
+        //  && TryGenerateWildMon(wildPokemonInfo, WILD_AREA_ROCKS, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
+        else if (TryGenerateWildMon(wildPokemonInfo, WILD_AREA_ROCKS, WILD_CHECK_REPEL | WILD_CHECK_KEEN_EYE) == TRUE)
         {
             if (TryDoDoubleWildBattle())
             {
@@ -1116,8 +1117,8 @@ bool8 IsWildLevelAllowedByRepel(u8 wildLevel)
 {
     u8 i;
 
-    if (!REPEL_STEP_COUNT)
-        return TRUE;
+    // if (!REPEL_STEP_COUNT)
+    //     return TRUE;
 
     for (i = 0; i < PARTY_SIZE; i++)
     {
