@@ -30,6 +30,7 @@
 #include "constants/abilities.h"
 #include "constants/items.h"
 #include "constants/battle_frontier.h"
+#include "randomizer.h"
 
 static void CB2_ReturnFromChooseHalfParty(void);
 static void CB2_ReturnFromChooseBattleFrontierParty(void);
@@ -68,6 +69,12 @@ u8 ScriptGiveEgg(enum Species species)
 {
     struct Pokemon mon;
     u8 isEgg;
+
+    species = RandomizeWildEncounter(
+        species,
+        gSaveBlock1Ptr->location.mapNum,
+        gSaveBlock1Ptr->location.mapGroup,
+        WILD_AREA_LAND, 0);
 
     CreateEgg(&mon, species, TRUE);
     isEgg = TRUE;
