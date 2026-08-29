@@ -537,6 +537,12 @@ void ScrCmd_createmon(struct ScriptContext *ctx)
         }
     }
 
+    species = RandomizeWildEncounter(
+        species,
+        gSaveBlock1Ptr->location.mapNum,
+        gSaveBlock1Ptr->location.mapGroup,
+        WILD_AREA_LAND, 0);
+
     u16 ivs[NUM_STATS];
     u32 nonFixedIvCount = 0;
     enum Stat availableIVs[NUM_STATS];

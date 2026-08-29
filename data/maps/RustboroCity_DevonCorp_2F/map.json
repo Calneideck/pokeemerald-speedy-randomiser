@@ -3,7 +3,6 @@
   "name": "RustboroCity_DevonCorp_2F",
   "layout": "LAYOUT_RUSTBORO_CITY_DEVON_CORP_2F",
   "music": "MUS_RUSTBORO",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_RUSTBORO_CITY",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -102,15 +101,9 @@
       "elevation": 0,
       "dest_map": "MAP_RUSTBORO_CITY_DEVON_CORP_1F",
       "dest_warp_id": "2"
-    },
-    {
-      "x": 2,
-      "y": 1,
-      "elevation": 0,
-      "dest_map": "MAP_RUSTBORO_CITY_DEVON_CORP_3F",
-      "dest_warp_id": "0"
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }
