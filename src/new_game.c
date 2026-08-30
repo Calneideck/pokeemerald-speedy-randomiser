@@ -247,6 +247,7 @@ void NewGameInitData(void)
     ResetItemFlags();
     ResetDexNav();
     ClearFollowerNPCData();
+    SetDefaultOptions();
 }
 
 static void ResetMiniGamesRecords(void)
