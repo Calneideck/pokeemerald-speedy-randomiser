@@ -154,6 +154,7 @@ Route120_EventScript_BerryNotLove::
 Route120_EventScript_Steven::
 	lock
 	faceplayer
+    goto_if_unset FLAG_BADGE06_GET, Route120_EventScript_StevenGym
 	goto_if_set FLAG_NOT_READY_FOR_BATTLE_ROUTE_120, Route120_EventScript_StevenAskReadyForBattle
 	msgbox Route120_Text_StevenGreeting, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route120_EventScript_StevenNotReady
@@ -170,6 +171,11 @@ Route120_EventScript_StevenAskReadyForBattle::
 	msgbox Route120_Text_StevenReadyForBattle, MSGBOX_YESNO
 	goto_if_eq VAR_RESULT, NO, Route120_EventScript_StevenNotReady
 	goto Route120_EventScript_StevenBattleKecleon
+	end
+
+Route120_EventScript_StevenGym::
+	msgbox Route120_Text_StevenGym, MSGBOX_DEFAULT
+	release
 	end
 
 Route120_EventScript_StevenBattleKecleon::
@@ -379,6 +385,10 @@ Route120_Text_StevenIllWaitHere:
 Route120_Text_StevenReadyForBattle:
 	.string "STEVEN: {PLAYER}{KUN}, are your POKéMON\n"
 	.string "ready for battle?$"
+
+Route120_Text_StevenGym:
+	.string "STEVEN: {PLAYER}{KUN}, defeat the Fortree\n"
+	.string "gym leader, then return here.$"
 
 Route120_Text_StevenShowMeYourPower:
 	.string "STEVEN: {PLAYER}{KUN}, show me your true\n"
