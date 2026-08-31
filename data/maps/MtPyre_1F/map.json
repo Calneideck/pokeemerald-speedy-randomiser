@@ -3,7 +3,6 @@
   "name": "MtPyre_1F",
   "layout": "LAYOUT_MT_PYRE_1F",
   "music": "MUS_MT_PYRE",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_MT_PYRE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -85,13 +84,6 @@
       "dest_warp_id": "0"
     },
     {
-      "x": 11,
-      "y": 1,
-      "elevation": 3,
-      "dest_map": "MAP_MT_PYRE_2F",
-      "dest_warp_id": "0"
-    },
-    {
       "x": 20,
       "y": 9,
       "elevation": 3,
@@ -100,5 +92,6 @@
     }
   ],
   "coord_events": [],
-  "bg_events": []
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }

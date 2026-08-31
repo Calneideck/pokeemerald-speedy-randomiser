@@ -3,7 +3,6 @@
   "name": "MtPyre_Exterior",
   "layout": "LAYOUT_MT_PYRE_EXTERIOR",
   "music": "MUS_MT_PYRE_EXTERIOR",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_MT_PYRE",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -17,8 +16,8 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_ITEM_BALL",
-      "x": 27,
-      "y": 15,
+      "x": 12,
+      "y": 36,
       "elevation": 3,
       "movement_type": "MOVEMENT_TYPE_LOOK_AROUND",
       "movement_range_x": 0,
@@ -48,20 +47,6 @@
       "y": 42,
       "elevation": 3,
       "dest_map": "MAP_MT_PYRE_1F",
-      "dest_warp_id": "1"
-    },
-    {
-      "x": 19,
-      "y": 10,
-      "elevation": 3,
-      "dest_map": "MAP_MT_PYRE_SUMMIT",
-      "dest_warp_id": "1"
-    },
-    {
-      "x": 20,
-      "y": 10,
-      "elevation": 3,
-      "dest_map": "MAP_MT_PYRE_SUMMIT",
       "dest_warp_id": "1"
     }
   ],
@@ -112,22 +97,6 @@
       "script": "MtPyre_Exterior_EventScript_FogTrigger"
     }
   ],
-  "bg_events": [
-    {
-      "type": "hidden_item",
-      "x": 9,
-      "y": 8,
-      "elevation": 0,
-      "item": "ITEM_ULTRA_BALL",
-      "flag": "FLAG_HIDDEN_ITEM_MT_PYRE_EXTERIOR_ULTRA_BALL"
-    },
-    {
-      "type": "hidden_item",
-      "x": 16,
-      "y": 22,
-      "elevation": 0,
-      "item": "ITEM_MAX_ETHER",
-      "flag": "FLAG_HIDDEN_ITEM_MT_PYRE_EXTERIOR_MAX_ETHER"
-    }
-  ]
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }

@@ -304,6 +304,7 @@ EventScript_ResetAllMapFlags::
     setflag FLAG_HIDE_ROUTE_118_STEVEN
 	setflag FLAG_HIDE_ROUTE_119_TEAM_AQUA
     setflag FLAG_HIDE_ROUTE_121_TEAM_AQUA_GRUNTS
+	setflag FLAG_HIDE_MT_PYRE_SUMMIT_TEAM_AQUA
 	setvar VAR_WEATHER_INSTITUTE_STATE, 1
 	call EventScript_ResetAllBerries
 	end
