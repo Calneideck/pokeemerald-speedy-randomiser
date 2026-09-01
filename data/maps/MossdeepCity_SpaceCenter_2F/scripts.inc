@@ -272,6 +272,8 @@ MossdeepCity_SpaceCenter_2F_EventScript_DefeatedMaxieTabitha::
 	setflag FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_1F_TEAM_MAGMA
 	setflag FLAG_HIDE_MOSSDEEP_CITY_SPACE_CENTER_2F_TEAM_MAGMA
 	setflag FLAG_HIDE_MOSSDEEP_CITY_TEAM_MAGMA
+    setflag FLAG_VISITED_PACIFIDLOG_TOWN
+    setflag FLAG_VISITED_SOOTOPOLIS_CITY
 	removeobject LOCALID_SPACE_CENTER_GRUNT_6
 	removeobject LOCALID_SPACE_CENTER_GRUNT_7
 	removeobject LOCALID_SPACE_CENTER_GRUNT_5
@@ -287,6 +289,10 @@ MossdeepCity_SpaceCenter_2F_EventScript_DefeatedMaxieTabitha::
 	fadescreen FADE_FROM_BLACK
 	msgbox MossdeepCity_SpaceCenter_2F_Text_StevenThankYouComeSeeMeAtHome, MSGBOX_DEFAULT
 	closemessage
+	playfanfare MUS_OBTAIN_ITEM
+    message MossdeepCity_SpaceCenter_2F_Text_Fly
+	waitfanfare
+	waitmessage
 	fadescreen FADE_TO_BLACK
 	setflag FLAG_DEFEATED_MAGMA_SPACE_CENTER
 	setflag FLAG_HIDE_MOSSDEEP_CITY_STEVENS_HOUSE_STEVEN
@@ -488,3 +494,7 @@ MossdeepCity_SpaceCenter_2F_Text_StevenThankYouComeSeeMeAtHome:
 	.string "after this.\p"
 	.string "Oh, yes, I don't live in RUSTBORO CITY.\n"
 	.string "I live right here on this island.$"
+
+MossdeepCity_SpaceCenter_2F_Text_Fly:
+	.string "{PLAYER} can now fly to Sootopolis\n"
+	.string "City and Pacifidlog Town!$"
