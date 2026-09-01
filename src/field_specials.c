@@ -1896,7 +1896,7 @@ u16 GetDeptStoreDefaultFloorChoice(void)
             sLilycoveDeptStore_DefaultFloorChoice = 2;
             break;
         case MAP_NUM(MAP_LILYCOVE_CITY_DEPARTMENT_STORE_2F):
-            sLilycoveDeptStore_DefaultFloorChoice = 3;
+            sLilycoveDeptStore_DefaultFloorChoice = 4;
             break;
         case MAP_NUM(MAP_LILYCOVE_CITY_DEPARTMENT_STORE_1F):
             sLilycoveDeptStore_DefaultFloorChoice = 4;

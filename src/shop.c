@@ -41,6 +41,7 @@
 #include "constants/metatile_behaviors.h"
 #include "constants/rgb.h"
 #include "constants/songs.h"
+#include "event_data.h"
 
 #define TAG_SCROLL_ARROW   2100
 #define TAG_ITEM_ICON_BASE 9110 // immune to time blending
@@ -126,6 +127,7 @@ static void BuyMenuDrawGraphics(void);
 static void BuyMenuAddScrollIndicatorArrows(void);
 static void Task_BuyMenu(u8 taskId);
 static void BuyMenuBuildListMenuTemplate(void);
+static bool8 HasBoughtItem(enum Item);
 static void BuyMenuInitBgs(void);
 static void BuyMenuInitWindows(void);
 static void BuyMenuDecompressBgGraphics(void);
@@ -634,6 +636,30 @@ static void BuyMenuPrintItemDescriptionAndShowItemIcon(s32 item, bool8 onInit, s
     BuyMenuPrint(WIN_ITEM_DESCRIPTION, description, 3, 1, 0, COLORID_NORMAL);
 }
 
+static bool8 HasBoughtItem(enum Item itemId) {
+    switch (itemId) {
+        case ITEM_TM_FIRE_BLAST:
+            return FlagGet(FLAG_BOUGHT_TM_FIRE_BLAST);
+        case ITEM_TM_THUNDER:
+            return FlagGet(FLAG_BOUGHT_TM_THUNDER);
+        case ITEM_TM_BLIZZARD:
+            return FlagGet(FLAG_BOUGHT_TM_BLIZZARD);
+        case ITEM_TM_HYPER_BEAM:
+            return FlagGet(FLAG_BOUGHT_TM_HYPER_BEAM);
+        case ITEM_TM_PROTECT:
+            return FlagGet(FLAG_BOUGHT_TM_PROTECT);
+        case ITEM_TM_SAFEGUARD:
+            return FlagGet(FLAG_BOUGHT_TM_SAFEGUARD);
+        case ITEM_TM_REFLECT:
+            return FlagGet(FLAG_BOUGHT_TM_REFLECT);
+        case ITEM_TM_LIGHT_SCREEN:
+            return FlagGet(FLAG_BOUGHT_TM_LIGHT_SCREEN);
+        default:
+            return FALSE;
+    }
+    return FALSE;
+}
+
 static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y)
 {
     u8 x;
@@ -657,7 +683,7 @@ static void BuyMenuPrintPriceInList(u8 windowId, u32 itemId, u8 y)
                 6);
         }
 
-        if (GetItemImportance(itemId) && (CheckBagHasItem(itemId, 1) || CheckPCHasItem(itemId, 1)))
+        if (HasBoughtItem(itemId) || (GetItemImportance(itemId) && (CheckBagHasItem(itemId, 1) || CheckPCHasItem(itemId, 1))))
             StringCopy(gStringVar4, gText_SoldOut);
         else
             StringExpandPlaceholders(gStringVar4, gText_PokedollarVar1);
@@ -1021,7 +1047,7 @@ static void Task_BuyMenu(u8 taskId)
             else
                 sShopData->totalCost = gDecorations[itemId].price;
 
-            if (GetItemImportance(itemId) && (CheckBagHasItem(itemId, 1) || CheckPCHasItem(itemId, 1)))
+            if (HasBoughtItem(itemId) || (GetItemImportance(itemId) && (CheckBagHasItem(itemId, 1) || CheckPCHasItem(itemId, 1))))
                 BuyMenuDisplayMessage(taskId, gText_ThatItemIsSoldOut, BuyMenuReturnToItemList);
             else if (!IsEnoughMoney(&gSaveBlock1Ptr->money, sShopData->totalCost))
             {
@@ -1032,7 +1058,7 @@ static void Task_BuyMenu(u8 taskId)
                 if (sMartInfo.martType == MART_TYPE_NORMAL)
                 {
                     CopyItemName(itemId, gStringVar1);
-                    if (GetItemImportance(itemId))
+                    if (GetItemImportance(itemId) || GetItemPocket(itemId) == POCKET_TM_HM)
                     {
                         ConvertIntToDecimalStringN(gStringVar2, sShopData->totalCost, STR_CONV_MODE_LEFT_ALIGN, 6);
                         StringExpandPlaceholders(gStringVar4, gText_YouWantedVar1ThatllBeVar2);
@@ -1040,11 +1066,11 @@ static void Task_BuyMenu(u8 taskId)
                         sShopData->totalCost = (GetItemPrice(tItemId) >> IsPokeNewsActive(POKENEWS_SLATEPORT)) * tItemCount;
                         BuyMenuDisplayMessage(taskId, gStringVar4, BuyMenuConfirmPurchase);
                     }
-                    else if (GetItemPocket(itemId) == POCKET_TM_HM)
-                    {
-                        StringCopy(gStringVar2, GetMoveName(ItemIdToBattleMoveId(itemId)));
-                        BuyMenuDisplayMessage(taskId, gText_Var1CertainlyHowMany2, Task_BuyHowManyDialogueInit);
-                    }
+                    // else if (GetItemPocket(itemId) == POCKET_TM_HM)
+                    // {
+                    //     StringCopy(gStringVar2, GetMoveName(ItemIdToBattleMoveId(itemId)));
+                    //     BuyMenuDisplayMessage(taskId, gText_Var1CertainlyHowMany2, Task_BuyHowManyDialogueInit);
+                    // }
                     else
                     {
                         BuyMenuDisplayMessage(taskId, gText_Var1CertainlyHowMany, Task_BuyHowManyDialogueInit);
@@ -1152,6 +1178,35 @@ static void BuyMenuTryMakePurchase(u8 taskId)
             GetSetItemObtained(tItemId, FLAG_SET_ITEM_OBTAINED);
             RecordItemPurchase(taskId);
             BuyMenuDisplayMessage(taskId, gText_HereYouGoThankYou, BuyMenuSubtractMoney);
+
+            switch (tItemId) {
+                case ITEM_TM_FIRE_BLAST:
+                    FlagSet(FLAG_BOUGHT_TM_FIRE_BLAST);
+                    break;
+                case ITEM_TM_THUNDER:
+                    FlagSet(FLAG_BOUGHT_TM_THUNDER);
+                    break;
+                case ITEM_TM_BLIZZARD:
+                    FlagSet(FLAG_BOUGHT_TM_BLIZZARD);
+                    break;
+                case ITEM_TM_HYPER_BEAM:
+                    FlagSet(FLAG_BOUGHT_TM_HYPER_BEAM);
+                    break;
+                case ITEM_TM_PROTECT:
+                    FlagSet(FLAG_BOUGHT_TM_PROTECT);
+                    break;
+                case ITEM_TM_SAFEGUARD:
+                    FlagSet(FLAG_BOUGHT_TM_SAFEGUARD);
+                    break;
+                case ITEM_TM_REFLECT:
+                    FlagSet(FLAG_BOUGHT_TM_REFLECT);
+                    break;
+                case ITEM_TM_LIGHT_SCREEN:
+                    FlagSet(FLAG_BOUGHT_TM_LIGHT_SCREEN);
+                    break;
+                default:
+                    break;
+            }
         }
         else
         {

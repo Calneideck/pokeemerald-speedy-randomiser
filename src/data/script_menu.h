@@ -326,7 +326,6 @@ static const struct MenuAction MultichoiceList_Floors[] =
 {
     {gText_5F},
     {gText_4F},
-    {gText_3F},
     {gText_2F},
     {gText_1F},
     {gText_Exit},

@@ -52,19 +52,19 @@
 #else
 
 #define FLAG_INFINITE_REPEL    0x20
-#define FLAG_BOUGHT_TM_1     0x21 // Unused Flag
-#define FLAG_BOUGHT_TM_2    0x22 // Unused Flag
-#define FLAG_BOUGHT_TM_3    0x23 // Unused Flag
-#define FLAG_BOUGHT_TM_4    0x24 // Unused Flag
-#define FLAG_BOUGHT_TM_5    0x25 // Unused Flag
-#define FLAG_UNUSED_0x026    0x26 // Unused Flag
-#define FLAG_UNUSED_0x027    0x27 // Unused Flag
-#define FLAG_UNUSED_0x028    0x28 // Unused Flag
-#define FLAG_UNUSED_0x029    0x29 // Unused Flag
-#define FLAG_UNUSED_0x02A    0x2A // Unused Flag
-#define FLAG_UNUSED_0x02B    0x2B // Unused Flag
-#define FLAG_UNUSED_0x02C    0x2C // Unused Flag
-#define FLAG_UNUSED_0x02D    0x2D // Unused Flag
+#define FLAG_BOUGHT_TM_1     0x21
+#define FLAG_BOUGHT_TM_2    0x22
+#define FLAG_BOUGHT_TM_3    0x23
+#define FLAG_BOUGHT_TM_4    0x24
+#define FLAG_BOUGHT_TM_5    0x25
+#define FLAG_BOUGHT_TM_FIRE_BLAST    0x26
+#define FLAG_BOUGHT_TM_THUNDER    0x27
+#define FLAG_BOUGHT_TM_BLIZZARD    0x28
+#define FLAG_BOUGHT_TM_HYPER_BEAM    0x29
+#define FLAG_BOUGHT_TM_PROTECT    0x2A
+#define FLAG_BOUGHT_TM_SAFEGUARD    0x2B
+#define FLAG_BOUGHT_TM_REFLECT    0x2C
+#define FLAG_BOUGHT_TM_LIGHT_SCREEN    0x2D
 #define FLAG_UNUSED_0x02E    0x2E // Unused Flag
 #define FLAG_UNUSED_0x02F    0x2F // Unused Flag
 #define FLAG_UNUSED_0x030    0x30 // Unused Flag
