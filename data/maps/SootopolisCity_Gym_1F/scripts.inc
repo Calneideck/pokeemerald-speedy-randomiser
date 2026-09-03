@@ -108,6 +108,10 @@ SootopolisCity_Gym_1F_EventScript_JuanDefeated::
     setflag FLAG_WALLACE_GOES_TO_SKY_PILLAR
     setflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA
     clearflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL
+	setflag FLAG_REGI_DOORS_OPENED
+    setflag FLAG_SYS_REGIROCK_PUZZLE_COMPLETED
+    setflag FLAG_SYS_REGISTEEL_PUZZLE_COMPLETED
+    setflag FLAG_SYS_BRAILLE_REGICE_COMPLETED
 	clearflag FLAG_HIDE_SOOTOPOLIS_CITY_MAN_1
 	setvar VAR_0x8008, 8
 	call Common_EventScript_SetGymTrainers
@@ -197,7 +201,7 @@ SootopolisCity_Gym_1F_Text_GymGuideAdvice:
 	.string "SOOTOPOLIS's GYM LEADER JUAN is\n"
 	.string "a master of WATER-type POKéMON.\p"
 	.string "And, to get to JUAN, you will\n"
-	.string "have to defeat all of the trainers\p"
+	.string "have to defeat all of the trainers\l"
 	.string "on the lower floor.\p"
 	.string "That's all the advice that\n"
 	.string "I have for you.\p"
