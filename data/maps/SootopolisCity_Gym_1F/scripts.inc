@@ -3,6 +3,7 @@ SootopolisCity_Gym_1F_MapScripts::
 	map_script MAP_SCRIPT_ON_RESUME, SootopolisCity_Gym_1F_OnResume
 	map_script MAP_SCRIPT_ON_LOAD, SootopolisCity_Gym_1F_OnLoad
 	map_script MAP_SCRIPT_ON_TRANSITION, SootopolisCity_Gym_1F_OnTransition
+	map_script MAP_SCRIPT_ON_WARP_INTO_MAP_TABLE, SootopolisCity_Gym_1F_OnWarp
 	.byte 0
 
 SootopolisCity_Gym_1F_OnTransition:
@@ -18,10 +19,14 @@ SootopolisCity_Gym_1F_OnLoad:
 	special SetSootopolisGymCrackedIceMetatiles
 	end
 
+SootopolisCity_Gym_1F_OnWarp:
+	map_script_2 VAR_TEMP_0, 0, SootopolisCity_Gym_1F_EventScript_PositionGymGuide
+	.2byte 0
+
 SootopolisCity_Gym_1F_EventScript_CheckSetStairMetatiles::
-	goto_if_lt VAR_ICE_STEP_COUNT, 8, SootopolisCity_Gym_1F_EventScript_StopCheckingStairs  @ All stairs ice
-	goto_if_lt VAR_ICE_STEP_COUNT, 28, SootopolisCity_Gym_1F_EventScript_OpenFirstStairs
-	goto_if_lt VAR_ICE_STEP_COUNT, 67, SootopolisCity_Gym_1F_EventScript_OpenFirstAndSecondStairs
+	goto_if_lt VAR_ICE_STEP_COUNT, 4, SootopolisCity_Gym_1F_EventScript_StopCheckingStairs  @ All stairs ice
+	goto_if_lt VAR_ICE_STEP_COUNT, 8, SootopolisCity_Gym_1F_EventScript_OpenFirstStairs
+	goto_if_lt VAR_ICE_STEP_COUNT, 13, SootopolisCity_Gym_1F_EventScript_OpenFirstAndSecondStairs
 	setmetatile 8, 4, METATILE_SootopolisGym_Stairs, FALSE
 	setmetatile 8, 5, METATILE_SootopolisGym_Stairs, FALSE
 SootopolisCity_Gym_1F_EventScript_OpenFirstAndSecondStairs::
@@ -34,9 +39,9 @@ SootopolisCity_Gym_1F_EventScript_StopCheckingStairs::
 	return
 
 SootopolisCity_Gym_1F_OnFrame:
-	map_script_2 VAR_ICE_STEP_COUNT, 8, SootopolisCity_Gym_1F_EventScript_UnlockFirstStairs
-	map_script_2 VAR_ICE_STEP_COUNT, 28, SootopolisCity_Gym_1F_EventScript_UnlockSecondStairs
-	map_script_2 VAR_ICE_STEP_COUNT, 67, SootopolisCity_Gym_1F_EventScript_UnlockThirdStairs
+	map_script_2 VAR_ICE_STEP_COUNT, 4, SootopolisCity_Gym_1F_EventScript_UnlockFirstStairs
+	map_script_2 VAR_ICE_STEP_COUNT, 8, SootopolisCity_Gym_1F_EventScript_UnlockSecondStairs
+	map_script_2 VAR_ICE_STEP_COUNT, 13, SootopolisCity_Gym_1F_EventScript_UnlockThirdStairs
 	map_script_2 VAR_ICE_STEP_COUNT, 0, SootopolisCity_Gym_1F_EventScript_FallThroughIce
 	.2byte 0
 
@@ -100,6 +105,9 @@ SootopolisCity_Gym_1F_EventScript_JuanDefeated::
 	setflag FLAG_HIDE_SOOTOPOLIS_CITY_STEVEN
 	setflag FLAG_HIDE_SOOTOPOLIS_CITY_WALLACE
 	setvar VAR_SOOTOPOLIS_CITY_STATE, 6
+    setflag FLAG_WALLACE_GOES_TO_SKY_PILLAR
+    setflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA
+    clearflag FLAG_HIDE_SKY_PILLAR_TOP_RAYQUAZA_STILL
 	clearflag FLAG_HIDE_SOOTOPOLIS_CITY_MAN_1
 	setvar VAR_0x8008, 8
 	call Common_EventScript_SetGymTrainers
@@ -116,16 +124,16 @@ SootopolisCity_Gym_1F_EventScript_JuanDefeated::
 	end
 
 SootopolisCity_Gym_1F_EventScript_GiveWaterPulse::
-	giveitem ITEM_TM_WATER_PULSE
-	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_BagIsFull
 	msgbox SootopolisCity_Gym_1F_Text_ExplainWaterPulse, MSGBOX_DEFAULT
+	giveitem ITEM_MASTER_BALL, 1, FALSE
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_BagIsFull
 	setflag FLAG_RECEIVED_TM_WATER_PULSE
 	return
 
 SootopolisCity_Gym_1F_EventScript_GiveWaterPulse2::
-	giveitem ITEM_TM_WATER_PULSE
-	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
 	msgbox SootopolisCity_Gym_1F_Text_ExplainWaterPulse, MSGBOX_DEFAULT
+	giveitem ITEM_MASTER_BALL, 1, FALSE
+	goto_if_eq VAR_RESULT, FALSE, Common_EventScript_ShowBagIsFull
 	setflag FLAG_RECEIVED_TM_WATER_PULSE
 	release
 	end
@@ -139,6 +147,14 @@ SootopolisCity_Gym_1F_EventScript_JuanRematch::
 	trainerbattle_rematch_double TRAINER_JUAN_1, SootopolisCity_Gym_1F_Text_JuanPreRematch, SootopolisCity_Gym_1F_Text_JuanRematchDefeat, SootopolisCity_Gym_1F_Text_JuanRematchNeedTwoMons
 	msgbox SootopolisCity_Gym_1F_Text_JuanPostRematch, MSGBOX_AUTOCLOSE
 	end
+
+SootopolisCity_Gym_1F_EventScript_PositionGymGuide::
+    call_if_unset TRAINER_FLAGS_START + TRAINER_CRISSY, SootopolisCity_Gym_1F_EventScript_PositionGymGuide2
+    end
+
+SootopolisCity_Gym_1F_EventScript_PositionGymGuide2::
+    setobjectxy LOCALID_SOOTOPOLISCITY_GYM_GUIDE, 8, 22
+    end
 
 SootopolisCity_Gym_1F_EventScript_GymGuide::
 	lock
@@ -180,10 +196,11 @@ SootopolisCity_Gym_1F_Text_GymGuideAdvice:
 	.string "bound {PLAYER}?\p"
 	.string "SOOTOPOLIS's GYM LEADER JUAN is\n"
 	.string "a master of WATER-type POKéMON.\p"
-	.string "And, to get to JUAN, an icy floor\n"
-	.string "will hamper your progress…\p"
-	.string "Listen, I'm sorry, but that's all the\n"
-	.string "advice that I have for you.\p"
+	.string "And, to get to JUAN, you will\n"
+	.string "have to defeat all of the trainers\p"
+	.string "on the lower floor.\p"
+	.string "That's all the advice that\n"
+	.string "I have for you.\p"
 	.string "The rest of the way, you have to\n"
 	.string "go for it yourself!$"
 
@@ -247,11 +264,9 @@ SootopolisCity_Gym_1F_Text_ExplainRainBadgeTakeThis:
 	.string "battle we shared, take this…$"
 
 SootopolisCity_Gym_1F_Text_ExplainWaterPulse:
-	.string "The TECHNICAL MACHINE I handed you\n"
-	.string "contains WATER PULSE.\p"
-	.string "In use, it will occasionally confuse\n"
-	.string "the target with ultrasonic waves.\p"
-	.string "… … … … … …$"
+	.string "Some legendary POKéMON are\n"
+	.string "now available to catch.\p"
+	.string "This should help!$"
 
 SootopolisCity_Gym_1F_Text_RegisteredJuan:
 	.string "Registered GYM LEADER JUAN\n"
