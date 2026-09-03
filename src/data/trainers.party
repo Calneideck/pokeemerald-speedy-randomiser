@@ -3186,11 +3186,11 @@ Double Battle: No
 AI: Check Bad Move
 
 Machop
-Level: 24
+Level: 30
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Machoke
-Level: 28
+Level: 30
 IVs: 18 HP / 18 Atk / 18 Def / 18 SpA / 18 SpD / 18 Spe
 
 === TRAINER_NOB_1 ===
@@ -9134,11 +9134,11 @@ Double Battle: No
 AI: Check Bad Move
 
 Zangoose
-Level: 18
+Level: 28
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Seviper
-Level: 18
+Level: 28
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_TABITHA_MOSSDEEP ===
@@ -13565,11 +13565,11 @@ Double Battle: No
 AI: Check Bad Move
 
 Kadabra
-Level: 26
+Level: 30
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Kirlia
-Level: 26
+Level: 30
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_HELENE ===
@@ -13582,11 +13582,11 @@ Double Battle: No
 AI: Check Bad Move
 
 Meditite
-Level: 26
+Level: 30
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Makuhita
-Level: 26
+Level: 30
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_MARLENE ===
@@ -13599,11 +13599,11 @@ Double Battle: No
 AI: Check Bad Move
 
 Meditite
-Level: 18
+Level: 28
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Spoink
-Level: 18
+Level: 28
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_DEVAN ===
