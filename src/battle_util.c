@@ -2987,6 +2987,13 @@ u32 AbilityBattleEffects(enum AbilityEffect caseID, enum BattlerId battler, enum
         gBattleScripting.battler = battler;
         switch (gLastUsedAbility)
         {
+        case ABILITY_INNARDS_OUT:
+            if (shouldAbilityTrigger)
+            {
+                BattleScriptCall(BattleScript_AbilityPopUp);
+                effect++;
+            }
+            break;
         case ABILITY_TRACE:
             if (!gBattleMons[battler].volatiles.traceActivated)
             {
