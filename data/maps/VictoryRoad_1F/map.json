@@ -3,7 +3,6 @@
   "name": "VictoryRoad_1F",
   "layout": "LAYOUT_VICTORY_ROAD_1F",
   "music": "MUS_VICTORY_ROAD",
-  "region": "REGION_HOENN",
   "region_map_section": "MAPSEC_VICTORY_ROAD",
   "requires_flash": false,
   "weather": "WEATHER_NONE",
@@ -17,14 +16,14 @@
   "object_events": [
     {
       "graphics_id": "OBJ_EVENT_GFX_MAN_3",
-      "x": 33,
-      "y": 22,
+      "x": 41,
+      "y": 25,
       "elevation": 3,
-      "movement_type": "MOVEMENT_TYPE_FACE_DOWN",
+      "movement_type": "MOVEMENT_TYPE_FACE_LEFT",
       "movement_range_x": 0,
       "movement_range_y": 0,
       "trainer_type": "TRAINER_TYPE_NORMAL",
-      "trainer_sight_or_berry_tree_id": "3",
+      "trainer_sight_or_berry_tree_id": "2",
       "script": "VictoryRoad_1F_EventScript_Edgar",
       "flag": "0"
     },
@@ -191,14 +190,6 @@
       "script": "VictoryRoad_1F_EventScript_WallyBattleTrigger2"
     }
   ],
-  "bg_events": [
-    {
-      "type": "hidden_item",
-      "x": 30,
-      "y": 39,
-      "elevation": 4,
-      "item": "ITEM_ULTRA_BALL",
-      "flag": "FLAG_HIDDEN_ITEM_VICTORY_ROAD_1F_ULTRA_BALL"
-    }
-  ]
+  "bg_events": [],
+  "region": "REGION_HOENN"
 }
