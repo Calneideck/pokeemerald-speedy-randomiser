@@ -1466,15 +1466,15 @@ Double Battle: No
 AI: Basic Trainer
 
 Swellow
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Mawile
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Kadabra
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_VITO ===
@@ -1488,19 +1488,19 @@ Double Battle: No
 AI: Basic Trainer
 
 Dodrio
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Kadabra
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Electrode
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Shiftry
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_OWEN ===
@@ -1514,15 +1514,15 @@ Double Battle: No
 AI: Basic Trainer
 
 Kecleon
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Graveler
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Wailord
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_WILTON_2 ===
@@ -1801,7 +1801,7 @@ Double Battle: No
 AI: Basic Trainer
 
 Claydol
-Level: 45
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_MICHELLE ===
@@ -1837,11 +1837,11 @@ Double Battle: No
 AI: Basic Trainer
 
 Skarmory
-Level: 43
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Sableye
-Level: 43
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_JULIE ===
@@ -1855,15 +1855,15 @@ Double Battle: No
 AI: Basic Trainer
 
 Sandslash
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Ninetales
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 Tropius
-Level: 42
+Level: 48
 IVs: 12 HP / 12 Atk / 12 Def / 12 SpA / 12 SpD / 12 Spe
 
 === TRAINER_BROOKE_2 ===
@@ -4667,7 +4667,7 @@ Altaria
 Level: 54
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 
-Kingdra
+Regice
 Level: 53
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 
@@ -4675,7 +4675,7 @@ Flygon
 Level: 53
 IVs: 30 HP / 30 Atk / 30 Def / 30 SpA / 30 SpD / 30 Spe
 
-Salamence @ Sitrus Berry
+Arcanine @ Sitrus Berry
 Level: 55
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 
@@ -6062,7 +6062,7 @@ Wailord
 Level: 57
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 
-Tentacruel
+Spectrier
 Level: 55
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 
@@ -6078,7 +6078,7 @@ Gyarados
 Level: 56
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 
-Milotic @ Sitrus Berry
+Munkidori @ Sitrus Berry
 Level: 60
 IVs: 31 HP / 31 Atk / 31 Def / 31 SpA / 31 SpD / 31 Spe
 
@@ -9667,20 +9667,12 @@ Double Battle: No
 AI: Basic Trainer
 
 Lunatone
-Level: 43
+Level: 48
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Explosion
-- Reflect
-- Light Screen
-- Psychic
 
 Solrock
-Level: 43
+Level: 48
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
-- Explosion
-- Reflect
-- Light Screen
-- Shadow Ball
 
 === TRAINER_ISAAC_2 ===
 Name: ISAAC
@@ -9858,11 +9850,11 @@ Double Battle: No
 AI: Basic Trainer
 
 Sableye
-Level: 43
+Level: 48
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 Absol
-Level: 43
+Level: 48
 IVs: 0 HP / 0 Atk / 0 Def / 0 SpA / 0 SpD / 0 Spe
 
 === TRAINER_GARRISON ===
