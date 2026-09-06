@@ -3321,8 +3321,8 @@ static const struct LevelUpMove sUniformLevelUpLearnset[] =
     {.move = MOVE_TAKE_DOWN,    .level = 42},
     {.move = MOVE_FLAMETHROWER, .level = 46},
     {.move = MOVE_CRUNCH,       .level = 46},
-    {.move = MOVE_EARTHQUAKE,   .level = 60},
-    {.move = MOVE_DOUBLE_EDGE,  .level = 60},
+    {.move = MOVE_EARTHQUAKE,   .level = 48},
+    {.move = MOVE_DOUBLE_EDGE,  .level = 48},
     {.move = MOVE_POUND,        .level = 60},
     {.move = LEVEL_UP_MOVE_END, .level =  0},
 };
