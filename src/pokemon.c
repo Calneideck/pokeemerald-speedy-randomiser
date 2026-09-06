@@ -4490,35 +4490,51 @@ enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode m
     {
     case EVO_MODE_NORMAL:
     case EVO_MODE_BATTLE_ONLY:
+    {
+        // Cached so that a DO_EVO call resolves to the same evolution the preceding CHECK_EVO call picked.
+        static u32 sChosenLevelEvo = 0;
+        u32 matchCount = 0;
+        u32 matchIndex = 0;
+
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
-            bool32 conditionsMet = FALSE;
             if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
+            if (evolutions[i].param > level)
+                continue;
+            if (!DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, CHECK_EVO))
+                continue;
+            matchCount++;
+        }
 
-            // Check main primary evolution method
-            switch (evolutions[i].method)
-            {
-            case EVO_LEVEL:
-                if (evolutions[i].param <= level)
-                    conditionsMet = TRUE;
-                break;
-            case EVO_LEVEL_BATTLE_ONLY:
-                if (mode == EVO_MODE_BATTLE_ONLY && evolutions[i].param <= level)
-                    conditionsMet = TRUE;
-                break;
-            }
+        if (matchCount == 0)
+            break;
 
-            if (conditionsMet && DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, evoState))
-            {
-                // All checks passed, so stop checking the rest of the evolutions.
-                // This is different from vanilla where the loop continues.
-                // If you have overlapping evolutions, put the ones you want to happen first on top of the list.
-                targetSpecies = evolutions[i].targetSpecies;
-                break;
-            }
+        if (evoState != DO_EVO)
+            sChosenLevelEvo = Random() % matchCount;
+        else if (sChosenLevelEvo >= matchCount)
+            sChosenLevelEvo = 0;
+
+        for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
+        {
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
+                continue;
+            if (evolutions[i].param > level)
+                continue;
+            if (!DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, CHECK_EVO))
+                continue;
+            if (matchIndex++ != sChosenLevelEvo)
+                continue;
+
+            // Re-run on the chosen evolution only.
+            DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, evoState);
+            targetSpecies = evolutions[i].targetSpecies;
+            if (canStopEvo != NULL)
+                *canStopEvo = FALSE;
+            break;
         }
         break;
+    }
     case EVO_MODE_TRADE:
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
@@ -4545,32 +4561,51 @@ enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode m
         break;
     case EVO_MODE_ITEM_USE:
     case EVO_MODE_ITEM_CHECK:
+    {
+        // Cached so that a DO_EVO call resolves to the same evolution the preceding CHECK_EVO call picked.
+        static u32 sChosenItemEvo = 0;
+        u32 matchCount = 0;
+        u32 matchIndex = 0;
+
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
         {
-            bool32 conditionsMet = FALSE;
             if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
+            if (evolutions[i].method != EVO_ITEM || evolutions[i].param != evolutionItem)
+                continue;
+            if (!DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, CHECK_EVO))
+                continue;
+            matchCount++;
+        }
 
-            switch (evolutions[i].method)
-            {
-            case EVO_ITEM:
-                if (evolutions[i].param == evolutionItem)
-                    conditionsMet = TRUE;
-                break;
-            }
+        if (matchCount == 0)
+            break;
 
-            if (conditionsMet && DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, evoState))
-            {
-                // All checks passed, so stop checking the rest of the evolutions.
-                // This is different from vanilla where the loop continues.
-                // If you have overlapping evolutions, put the ones you want to happen first on top of the list.
-                targetSpecies = evolutions[i].targetSpecies;
-                if (canStopEvo != NULL)
-                    *canStopEvo = FALSE;
-                break;
-            }
+        if (evoState != DO_EVO)
+            sChosenItemEvo = Random() % matchCount;
+        else if (sChosenItemEvo >= matchCount)
+            sChosenItemEvo = 0;
+
+        for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
+        {
+            if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
+                continue;
+            if (evolutions[i].method != EVO_ITEM || evolutions[i].param != evolutionItem)
+                continue;
+            if (!DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, CHECK_EVO))
+                continue;
+            if (matchIndex++ != sChosenItemEvo)
+                continue;
+
+            // Re-run on the chosen evolution only, so held/bag items are consumed just for it.
+            DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, evoState);
+            targetSpecies = evolutions[i].targetSpecies;
+            if (canStopEvo != NULL)
+                *canStopEvo = FALSE;
+            break;
         }
         break;
+    }
     // Battle evolution without leveling; party slot is being passed into the evolutionItem arg.
     case EVO_MODE_BATTLE_SPECIAL:
         for (i = 0; evolutions[i].method != EVOLUTIONS_END; i++)
