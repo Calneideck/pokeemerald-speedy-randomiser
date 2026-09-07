@@ -213,7 +213,7 @@ u32 ChooseWildMonIndex_Land(void)
         swap = TRUE;
 
     if (swap)
-        wildMonIndex = 11 - wildMonIndex;
+        wildMonIndex = 3 - wildMonIndex;
 
     return wildMonIndex;
 }
@@ -248,16 +248,14 @@ u32 ChooseWildMonIndex_Water(void)
         wildMonIndex = 1;
     else if (rand >= ENCOUNTER_CHANCE_WATER_MONS_SLOT_1 && rand < ENCOUNTER_CHANCE_WATER_MONS_SLOT_2)
         wildMonIndex = 2;
-    else if (rand >= ENCOUNTER_CHANCE_WATER_MONS_SLOT_2 && rand < ENCOUNTER_CHANCE_WATER_MONS_SLOT_3)
-        wildMonIndex = 3;
     else
-        wildMonIndex = 4;
+        wildMonIndex = 3;
 
     if (LURE_STEP_COUNT != 0 && (Random() % 10 < 2))
         swap = TRUE;
 
     if (swap)
-        wildMonIndex = 4 - wildMonIndex;
+        wildMonIndex = 3 - wildMonIndex;
 
     return wildMonIndex;
 }
@@ -274,10 +272,8 @@ u8 GetWaterEncounterSlotForMatchCall(void)
         return 1;
     else if (rand >= ENCOUNTER_CHANCE_WATER_MONS_SLOT_1 && rand < ENCOUNTER_CHANCE_WATER_MONS_SLOT_2)
         return 2;
-    else if (rand >= ENCOUNTER_CHANCE_WATER_MONS_SLOT_2 && rand < ENCOUNTER_CHANCE_WATER_MONS_SLOT_3)
-        return 3;
     else
-        return 4;
+        return 3;
 }
 
 
@@ -303,7 +299,7 @@ u32 ChooseWildMonIndex_Rocks(void)
         swap = TRUE;
 
     if (swap)
-        wildMonIndex = 4 - wildMonIndex;
+        wildMonIndex = 3 - wildMonIndex;
 
     return wildMonIndex;
 }
@@ -346,11 +342,11 @@ static u32 ChooseWildMonIndex_Fishing(u8 rod)
             wildMonIndex = 5;
         else if (rand >= ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_5 && rand < ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_6)
             wildMonIndex = 6;
-        else if (rand >= ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_6 && rand < ENCOUNTER_CHANCE_FISHING_MONS_GOOD_ROD_SLOT_7)
+        else
             wildMonIndex = 7;
 
         if (swap)
-            wildMonIndex = 6 - wildMonIndex;
+            wildMonIndex = 7 - wildMonIndex;
         break;
     case SUPER_ROD:
         if (rand < ENCOUNTER_CHANCE_FISHING_MONS_SUPER_ROD_SLOT_8)
@@ -365,7 +361,7 @@ static u32 ChooseWildMonIndex_Fishing(u8 rod)
         //     wildMonIndex = 9;
 
         if (swap)
-            wildMonIndex = 14 - wildMonIndex;
+            wildMonIndex = 11 - wildMonIndex;
         break;
     }
     return wildMonIndex;
