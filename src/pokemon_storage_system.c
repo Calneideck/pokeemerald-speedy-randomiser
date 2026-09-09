@@ -7,6 +7,7 @@
 #include "dynamic_placeholder_text_util.h"
 #include "event_data.h"
 #include "event_object_movement.h"
+#include "evolution_scene.h"
 #include "field_screen_effect.h"
 #include "field_weather.h"
 #include "fldeff_misc.h"
@@ -19,7 +20,11 @@
 #include "mail.h"
 #include "main.h"
 #include "menu.h"
+#include "menu_specialized.h"
+#include "battle.h"
+#include "caps.h"
 #include "mon_markings.h"
+#include "move.h"
 #include "naming_screen.h"
 #include "overworld.h"
 #include "palette.h"
@@ -109,6 +114,11 @@ enum {
     MSG_ITEM_IS_HELD,
     MSG_CHANGED_TO_ITEM,
     MSG_CANT_STORE_MAIL,
+    MSG_LEVELED_UP,
+    MSG_WONT_LEVEL_UP,
+    MSG_NEEDS_TO_REPLACE_MOVE,
+    MSG_LEARNED_MOVE,
+    MSG_MOVE_NOT_LEARNED,
 };
 
 // IDs for how to resolve variables in the above messages
@@ -121,6 +131,8 @@ enum {
     MSG_VAR_RELEASE_MON_2, // Unused
     MSG_VAR_RELEASE_MON_3,
     MSG_VAR_ITEM_NAME,
+    MSG_VAR_LEVELED_UP,
+    MSG_VAR_LEVEL_UP_MOVE,
 };
 
 // IDs for menu selection items. See SetMenuText, HandleMenuInput, etc
@@ -165,6 +177,7 @@ enum {
     MENU_MACHINE,
     MENU_SIMPLE,
     MENU_SELECT,
+    MENU_LEVEL_TO_CAP,
 };
 #define MENU_WALLPAPER_SETS_START MENU_SCENERY_1
 #define MENU_WALLPAPERS_START MENU_FOREST
@@ -207,6 +220,8 @@ enum {
     SCREEN_CHANGE_SUMMARY_SCREEN,
     SCREEN_CHANGE_NAME_BOX,
     SCREEN_CHANGE_ITEM_FROM_BAG,
+    SCREEN_CHANGE_FORGET_MOVE,
+    SCREEN_CHANGE_EVOLUTION,
 };
 
 enum {
@@ -519,10 +534,16 @@ struct PokemonStorageSystemData
         struct Pokemon *mon;
         struct BoxPokemon *box;
     } summaryMon;
-    u8 messageText[40];
+    u8 messageText[80];
     u8 boxTitleText[40];
     u8 releaseMonName[POKEMON_NAME_LENGTH + 1];
     u8 itemName[20];
+    u8 levelUpText[8];
+    u8 levelUpMonName[POKEMON_NAME_LENGTH + 1];
+    u8 levelUpMoveName[MOVE_NAME_LENGTH + 1];
+    u16 levelUpStatsWindowId;
+    u16 levelUpStatsBefore[NUM_STATS];
+    u16 levelUpStatsAfter[NUM_STATS];
     u8 inBoxMovingMode;
     u16 multiMoveWindowId;
     struct ItemIcon itemIcons[MAX_ITEM_ICONS];
@@ -551,6 +572,18 @@ EWRAM_DATA static u16 sMovingItemId = 0;
 EWRAM_DATA static struct Pokemon sSavedMovingMon = {0};
 EWRAM_DATA static s8 sCursorArea = 0;
 EWRAM_DATA static s8 sCursorPosition = 0;
+
+// Persists across the full UI teardown/rebuild that happens when leaving
+// to the "replace a move" summary screen and coming back.
+EWRAM_DATA static struct Pokemon sLevelUpMon = {0};
+EWRAM_DATA static u8 sLevelUpLevel = 0;
+EWRAM_DATA static u8 sLevelUpFinalLevel = 0;
+EWRAM_DATA static bool8 sLevelUpFreshLevel = FALSE;
+EWRAM_DATA static bool8 sLevelUpInParty = FALSE;
+EWRAM_DATA static u8 sLevelUpBoxId = 0;
+EWRAM_DATA static u8 sLevelUpBoxPos = 0;
+EWRAM_DATA static bool8 sLevelUpAwaitingReplace = FALSE;
+EWRAM_DATA static bool8 sLevelUpResuming = FALSE;
 EWRAM_DATA static bool8 sIsMonBeingMoved = 0;
 EWRAM_DATA static u8 sMovingMonOrigBoxId = 0;
 EWRAM_DATA static u8 sMovingMonOrigBoxPos = 0;
@@ -582,6 +615,7 @@ static void Task_ItemToBag(u8);
 static void Task_TakeItemForMoving(u8);
 static void Task_ShowMarkMenu(u8);
 static void Task_ShowMonSummary(u8);
+static void Task_LevelToCap(u8);
 static void Task_ReleaseMon(u8);
 static void Task_ReshowPokeStorage(u8);
 static void Task_PokeStorageMain(u8);
@@ -841,6 +875,11 @@ static void PrintMessage(u8 id);
 static void LoadDisplayMonGfx(enum Species species, u32 pid, bool32 isEgg);
 static void SpriteCB_DisplayMonMosaic(struct Sprite *);
 static void SetPartySlotTilemap(u8, bool8);
+static void PartyMenuTryEvolution(u8);
+static void CommitLevelUpMon(void);
+static void BufferLevelUpStats(u16 *);
+static void ShowLevelUpStatsWindow(void);
+static void RemoveLevelUpStatsWindow(void);
 
 // Tilemap utility
 static void TilemapUtil_SetRect(u8, u16, u16, u16, u16);
@@ -967,10 +1006,10 @@ static const struct WindowTemplate sWindowTemplates[] =
     },
     [WIN_MESSAGE] = {
         .bg = 0,
-        .tilemapLeft = 11,
-        .tilemapTop = 17,
-        .width = 18,
-        .height = 2,
+        .tilemapLeft = 1,
+        .tilemapTop = 15,
+        .width = 28,
+        .height = 4,
         .paletteNum = 15,
         .baseBlock = 0x14,
     },
@@ -1079,17 +1118,35 @@ static const struct StorageMessage sMessages[] =
     [MSG_ITEM_IS_HELD]         = {COMPOUND_STRING("{DYNAMIC 0} is now held."),   MSG_VAR_ITEM_NAME},
     [MSG_CHANGED_TO_ITEM]      = {COMPOUND_STRING("Changed to {DYNAMIC 0}."),    MSG_VAR_ITEM_NAME},
     [MSG_CANT_STORE_MAIL]      = {COMPOUND_STRING("MAIL can't be stored!"),      MSG_VAR_NONE},
+    [MSG_LEVELED_UP]           = {COMPOUND_STRING("{DYNAMIC 0} grew to Lv. {DYNAMIC 1}!"), MSG_VAR_LEVELED_UP},
+    [MSG_WONT_LEVEL_UP]        = {COMPOUND_STRING("It won't have any effect."),  MSG_VAR_NONE},
+    [MSG_NEEDS_TO_REPLACE_MOVE] = {COMPOUND_STRING("Should {DYNAMIC 0} replace a move\nto learn {DYNAMIC 1}?"), MSG_VAR_LEVEL_UP_MOVE},
+    [MSG_LEARNED_MOVE]         = {COMPOUND_STRING("{DYNAMIC 0} learned\n{DYNAMIC 1}!"), MSG_VAR_LEVEL_UP_MOVE},
+    [MSG_MOVE_NOT_LEARNED]     = {COMPOUND_STRING("{DYNAMIC 0} did not learn\nthe move {DYNAMIC 1}."), MSG_VAR_LEVEL_UP_MOVE},
 };
 
 static const struct WindowTemplate sYesNoWindowTemplate =
 {
     .bg = 0,
     .tilemapLeft = 24,
-    .tilemapTop = 11,
+    .tilemapTop = 9,
     .width = 5,
     .height = 4,
     .paletteNum = 15,
-    .baseBlock = 0x5C,
+    // Kept clear of WIN_MESSAGE's tiles, as both are shown at once.
+    .baseBlock = 0x84,
+};
+
+static const struct WindowTemplate sLevelUpStatsWindowTemplate =
+{
+    .bg = 0,
+    .tilemapLeft = 19,
+    .tilemapTop = 2,
+    .width = 10,
+    .height = 11,
+    .paletteNum = 15,
+    // Kept clear of WIN_MESSAGE's tiles, as both are shown at once.
+    .baseBlock = 0x84,
 };
 
 static const struct OamData sOamData_DisplayMon =
@@ -2086,6 +2143,14 @@ static void Task_InitPokeStorage(u8 taskId)
                 // Return from bag menu
                 GiveChosenBagItem();
                 break;
+            case SCREEN_CHANGE_FORGET_MOVE - 1:
+                // Return from the "replace a move" summary screen; Task_LevelToCap picks up from here.
+                sLevelUpResuming = TRUE;
+                break;
+            case SCREEN_CHANGE_EVOLUTION - 1:
+                // The evolution scene edited our copy of the mon, so store it back.
+                CommitLevelUpMon();
+                break;
             }
         }
         LoadPokeStorageMenuGfx();
@@ -2245,6 +2310,14 @@ enum {
 
 static void Task_PokeStorageMain(u8 taskId)
 {
+    if (sLevelUpResuming)
+    {
+        sLevelUpResuming = FALSE;
+        gTasks[taskId].func = Task_LevelToCap;
+        sStorage->state = 2;
+        return;
+    }
+
     switch (sStorage->state)
     {
     case MSTATE_HANDLE_INPUT:
@@ -2652,6 +2725,10 @@ static void Task_OnSelectedMon(u8 taskId)
                 PlaySE(SE_SELECT);
                 SetPokeStorageTask(Task_ReleaseMon);
             }
+            break;
+        case MENU_LEVEL_TO_CAP:
+            PlaySE(SE_SELECT);
+            SetPokeStorageTask(Task_LevelToCap);
             break;
         case MENU_SUMMARY:
             PlaySE(SE_SELECT);
@@ -3584,6 +3661,260 @@ static void Task_ShowMonSummary(u8 taskId)
     }
 }
 
+static void Task_LevelToCap(u8 taskId)
+{
+    u8 levelCap;
+    enum Species species;
+    u32 capExp;
+    u16 learnedMove;
+
+    switch (sStorage->state)
+    {
+    case 0:
+        if (sCursorArea == CURSOR_AREA_IN_PARTY)
+        {
+            sLevelUpInParty = TRUE;
+            sLevelUpMon = gParties[B_TRAINER_PLAYER][sCursorPosition];
+        }
+        else
+        {
+            sLevelUpInParty = FALSE;
+            sLevelUpBoxId = StorageGetCurrentBox();
+            BoxMonAtToMon(sLevelUpBoxId, sCursorPosition, &sLevelUpMon);
+        }
+        sLevelUpBoxPos = sCursorPosition;
+
+        levelCap = GetCurrentLevelCap();
+        sLevelUpLevel = GetMonData(&sLevelUpMon, MON_DATA_LEVEL);
+
+        // Nothing to do for an already-capped Pokémon (eggs are filtered out by the menu itself).
+        if (sLevelUpLevel >= levelCap)
+        {
+            PlaySE(SE_FAILURE);
+            PrintMessage(MSG_WONT_LEVEL_UP);
+            sStorage->state = 10;
+            break;
+        }
+
+        // Setting EXP directly (as Rare Candy does) is what actually raises the level;
+        // the level field itself is only derived from EXP by CalculateMonStats.
+        species = GetMonData(&sLevelUpMon, MON_DATA_SPECIES);
+        capExp = gExperienceTables[gSpeciesInfo[species].growthRate][levelCap];
+        BufferLevelUpStats(sStorage->levelUpStatsBefore);
+        SetMonData(&sLevelUpMon, MON_DATA_EXP, &capExp);
+        CalculateMonStats(&sLevelUpMon);
+        BufferLevelUpStats(sStorage->levelUpStatsAfter);
+
+        sLevelUpFinalLevel = GetMonData(&sLevelUpMon, MON_DATA_LEVEL);
+        sLevelUpFreshLevel = TRUE;
+        sLevelUpAwaitingReplace = FALSE;
+
+        ConvertIntToDecimalStringN(sStorage->levelUpText, sLevelUpFinalLevel, STR_CONV_MODE_LEFT_ALIGN, 3);
+        PlayFanfareByFanfareNum(FANFARE_LEVEL_UP);
+        PrintMessage(MSG_LEVELED_UP);
+        sStorage->state = 1;
+        break;
+    case 1:
+        // Wait for the "grew to level X" message, then show the stat gains.
+        if (WaitFanfare(FALSE) && JOY_NEW(A_BUTTON | B_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            ShowLevelUpStatsWindow();
+            DrawLevelUpWindowPg1(sStorage->levelUpStatsWindowId,
+                                 sStorage->levelUpStatsBefore, sStorage->levelUpStatsAfter,
+                                 TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
+            CopyWindowToVram(sStorage->levelUpStatsWindowId, COPYWIN_GFX);
+            ScheduleBgCopyTilemapToVram(0);
+            sStorage->state = 5;
+        }
+        break;
+    case 5:
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            DrawLevelUpWindowPg2(sStorage->levelUpStatsWindowId, sStorage->levelUpStatsAfter,
+                                 TEXT_COLOR_WHITE, TEXT_COLOR_DARK_GRAY, TEXT_COLOR_LIGHT_GRAY);
+            CopyWindowToVram(sStorage->levelUpStatsWindowId, COPYWIN_GFX);
+            ScheduleBgCopyTilemapToVram(0);
+            sStorage->state = 6;
+        }
+        break;
+    case 6:
+        // The window must be gone before the move-learning prompts reuse its tiles.
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            RemoveLevelUpStatsWindow();
+            sStorage->state = 2;
+        }
+        break;
+    case 2:
+        // Coming back from the "replace a move" summary screen: apply (or skip) the choice first.
+        if (sLevelUpAwaitingReplace)
+        {
+            u8 slot = GetMoveSlotToReplace();
+
+            sLevelUpAwaitingReplace = FALSE;
+            GetMonNickname(&sLevelUpMon, sStorage->levelUpMonName);
+            StringCopy(sStorage->levelUpMoveName, GetMoveName(gMoveToLearn));
+
+            if (slot != MAX_MON_MOVES)
+            {
+                RemoveMonPPBonus(&sLevelUpMon, slot);
+                SetMonMoveSlot(&sLevelUpMon, gMoveToLearn, slot);
+                PrintMessage(MSG_LEARNED_MOVE);
+            }
+            else
+            {
+                PrintMessage(MSG_MOVE_NOT_LEARNED);
+            }
+            sStorage->state = 4;
+            return;
+        }
+
+        while (TRUE)
+        {
+            if (sLevelUpLevel >= sLevelUpFinalLevel)
+            {
+                // No more levels to check; commit the Pokémon and finish up.
+                CalculateMonStats(&sLevelUpMon);
+                CommitLevelUpMon();
+                ClearBottomWindow();
+                PartyMenuTryEvolution(taskId);
+                return;
+            }
+
+            if (sLevelUpFreshLevel)
+                sLevelUpLevel++;
+
+            learnedMove = MonTryLearningNewMoveAtLevel(&sLevelUpMon, sLevelUpFreshLevel, sLevelUpLevel);
+            sLevelUpFreshLevel = FALSE;
+
+            if (learnedMove == 0)
+            {
+                // Nothing more to learn at this level; move on to the next one.
+                sLevelUpFreshLevel = TRUE;
+                continue;
+            }
+            else if (learnedMove == MON_ALREADY_KNOWS_MOVE)
+            {
+                continue;
+            }
+            else if (learnedMove == MON_HAS_MAX_MOVES)
+            {
+                GetMonNickname(&sLevelUpMon, sStorage->levelUpMonName);
+                StringCopy(sStorage->levelUpMoveName, GetMoveName(gMoveToLearn));
+                PrintMessage(MSG_NEEDS_TO_REPLACE_MOVE);
+                ShowYesNoWindow(0);
+                sStorage->state = 3;
+                return;
+            }
+            else
+            {
+                GetMonNickname(&sLevelUpMon, sStorage->levelUpMonName);
+                StringCopy(sStorage->levelUpMoveName, GetMoveName(learnedMove));
+                PrintMessage(MSG_LEARNED_MOVE);
+                sStorage->state = 4;
+                return;
+            }
+        }
+    case 3:
+        // "X needs to replace a move to learn Y. Do it?"
+        switch (Menu_ProcessInputNoWrapClearOnChoose())
+        {
+        case 0: // Yes
+            ClearBottomWindow();
+            sLevelUpAwaitingReplace = TRUE;
+            sWhichToReshow = SCREEN_CHANGE_FORGET_MOVE - 1;
+            sStorage->screenChangeType = SCREEN_CHANGE_FORGET_MOVE;
+            SetPokeStorageTask(Task_ChangeScreen);
+            break;
+        case MENU_B_PRESSED:
+        case 1: // No
+            GetMonNickname(&sLevelUpMon, sStorage->levelUpMonName);
+            StringCopy(sStorage->levelUpMoveName, GetMoveName(gMoveToLearn));
+            PrintMessage(MSG_MOVE_NOT_LEARNED);
+            sStorage->state = 4;
+            break;
+        }
+        break;
+    case 4:
+        // Wait for the "learned move"/"did not learn move" message, then keep leveling.
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            sStorage->state = 2;
+        }
+        break;
+    case 10:
+        if (JOY_NEW(A_BUTTON | B_BUTTON))
+        {
+            PlaySE(SE_SELECT);
+            ClearBottomWindow();
+            SetPokeStorageTask(Task_PokeStorageMain);
+        }
+        break;
+    }
+}
+
+// Writes sLevelUpMon back to wherever it came from, be that the party or a box.
+static void CommitLevelUpMon(void)
+{
+    if (sLevelUpInParty)
+        gParties[B_TRAINER_PLAYER][sLevelUpBoxPos] = sLevelUpMon;
+    else
+        SetBoxMonAt(sLevelUpBoxId, sLevelUpBoxPos, &sLevelUpMon.box);
+}
+
+static void BufferLevelUpStats(u16 *dest)
+{
+    dest[STAT_HP]    = GetMonData(&sLevelUpMon, MON_DATA_MAX_HP);
+    dest[STAT_ATK]   = GetMonData(&sLevelUpMon, MON_DATA_ATK);
+    dest[STAT_DEF]   = GetMonData(&sLevelUpMon, MON_DATA_DEF);
+    dest[STAT_SPEED] = GetMonData(&sLevelUpMon, MON_DATA_SPEED);
+    dest[STAT_SPATK] = GetMonData(&sLevelUpMon, MON_DATA_SPATK);
+    dest[STAT_SPDEF] = GetMonData(&sLevelUpMon, MON_DATA_SPDEF);
+}
+
+static void ShowLevelUpStatsWindow(void)
+{
+    sStorage->levelUpStatsWindowId = AddWindow(&sLevelUpStatsWindowTemplate);
+    DrawStdFrameWithCustomTileAndPalette(sStorage->levelUpStatsWindowId, FALSE, 11, 14);
+}
+
+static void RemoveLevelUpStatsWindow(void)
+{
+    ClearStdWindowAndFrameToTransparent(sStorage->levelUpStatsWindowId, TRUE);
+    RemoveWindow(sStorage->levelUpStatsWindowId);
+    ScheduleBgCopyTilemapToVram(0);
+}
+
+static void PartyMenuTryEvolution(u8 taskId)
+{
+    enum Species targetSpecies = SPECIES_NONE;
+    bool32 canStopEvo = TRUE;
+
+    targetSpecies = GetEvolutionTargetSpecies(&sLevelUpMon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, CHECK_EVO);
+
+    if (targetSpecies != SPECIES_NONE)
+    {
+        GetEvolutionTargetSpecies(&sLevelUpMon, EVO_MODE_NORMAL, ITEM_NONE, NULL, &canStopEvo, DO_EVO);
+        FreePokeStorageData();
+
+        sWhichToReshow = SCREEN_CHANGE_EVOLUTION - 1;
+        gCB2_AfterEvolution = CB2_ReturnToPokeStorage;
+        // The mon may well be in a box, where there's no party slot for the scene to look up.
+        BeginEvolutionSceneForMon(&sLevelUpMon, targetSpecies, canStopEvo);
+        DestroyTask(taskId);
+    }
+    else
+    {
+        SetPokeStorageTask(Task_PokeStorageMain);
+        TryRefreshDisplayMon();
+        RefreshDisplayMonData();
+    }
+}
+
 static void Task_GiveItemFromBag(u8 taskId)
 {
     switch (sStorage->state)
@@ -3784,6 +4115,11 @@ static void Task_ChangeScreen(u8 taskId)
     case SCREEN_CHANGE_ITEM_FROM_BAG:
         FreePokeStorageData();
         GoToBagMenu(ITEMMENULOCATION_PCBOX, 0, CB2_ReturnToPokeStorage);
+        break;
+    case SCREEN_CHANGE_FORGET_MOVE:
+        monIndex = sStorage->summaryStartPos;
+        FreePokeStorageData();
+        ShowSelectMovePokemonSummaryScreen(&sLevelUpMon, monIndex, CB2_ReturnToPokeStorage, gMoveToLearn);
         break;
     }
 
@@ -4323,6 +4659,14 @@ static void PrintMessage(u8 id)
 
         *txtPtr = EOS;
         DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, sStorage->itemName);
+        break;
+    case MSG_VAR_LEVELED_UP:
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, sStorage->displayMonName);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, sStorage->levelUpText);
+        break;
+    case MSG_VAR_LEVEL_UP_MOVE:
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(0, sStorage->levelUpMonName);
+        DynamicPlaceholderTextUtil_SetPlaceholderPtr(1, sStorage->levelUpMoveName);
         break;
     }
 
@@ -7801,6 +8145,8 @@ static bool8 SetMenuTexts_Mon(void)
     }
 
     SetMenuText(MENU_SUMMARY);
+    if (!sStorage->displayMonIsEgg && GetSpeciesAtCursorPosition() != SPECIES_NONE)
+        SetMenuText(MENU_LEVEL_TO_CAP);
     if (sStorage->boxOption == OPTION_MOVE_MONS)
     {
         if (sCursorArea == CURSOR_AREA_IN_BOX)
@@ -8065,7 +8411,8 @@ static void InitMenu(void)
     sStorage->menuWidth = 0;
     sStorage->menuWindow.bg = 0;
     sStorage->menuWindow.paletteNum = 15;
-    sStorage->menuWindow.baseBlock = 92;
+    // Kept clear of WIN_MESSAGE's tiles, as both are shown at once.
+    sStorage->menuWindow.baseBlock = 132;
 }
 
 static const u8 gPCText_Give[] = _("GIVE");
@@ -8112,6 +8459,7 @@ static const u8 *const sMenuTexts[] =
     [MENU_MACHINE]    = COMPOUND_STRING("MACHINE"),
     [MENU_SIMPLE]     = COMPOUND_STRING("SIMPLE"),
     [MENU_SELECT]     = COMPOUND_STRING("SELECT"),
+    [MENU_LEVEL_TO_CAP] = COMPOUND_STRING("LEVEL TO CAP"),
 };
 
 static void SetMenuText(u8 textId)

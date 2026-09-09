@@ -4500,7 +4500,7 @@ enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode m
         {
             if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
-            if (evolutions[i].param > level)
+            if (evolutions[i].param > level || evolutions[i].method != EVO_LEVEL)
                 continue;
             if (!DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, CHECK_EVO))
                 continue;
@@ -4519,7 +4519,7 @@ enum Species GetEvolutionTargetSpecies(struct Pokemon *mon, enum EvolutionMode m
         {
             if (SanitizeSpeciesId(evolutions[i].targetSpecies) == SPECIES_NONE)
                 continue;
-            if (evolutions[i].param > level)
+            if (evolutions[i].param > level || evolutions[i].method != EVO_LEVEL)
                 continue;
             if (!DoesMonMeetAdditionalConditions(mon, evolutions[i].params, NULL, PARTY_SIZE, canStopEvo, CHECK_EVO))
                 continue;

@@ -15,6 +15,8 @@ const enum Move RandomizerMovesBans[] = {
     MOVE_DESTINY_BOND,
     MOVE_SPLASH,
     MOVE_PIKA_PAPOW,
+    MOVE_STRUGGLE,
+    MOVE_HAPPY_HOUR,
 };
 
 // Bans abilities from the randomizer

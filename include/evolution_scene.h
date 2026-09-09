@@ -4,6 +4,7 @@
 #include "constants/species.h"
 
 void BeginEvolutionScene(struct Pokemon *mon, enum Species postEvoSpecies, bool32 canStopEvo, u8 partyId);
+void BeginEvolutionSceneForMon(struct Pokemon *mon, enum Species postEvoSpecies, bool32 canStopEvo);
 void EvolutionScene(struct Pokemon *mon, enum Species postEvoSpecies, bool32 canStopEvo, u8 partyId);
 void TradeEvolutionScene(struct Pokemon *mon, enum Species postEvoSpecies, u8 preEvoSpriteId, u8 partyId);
 

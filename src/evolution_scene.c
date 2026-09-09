@@ -48,6 +48,8 @@ struct EvoInfo
 
 static EWRAM_DATA struct EvoInfo *sEvoStructPtr = NULL;
 static EWRAM_DATA u16 *sBgAnimPal = NULL;
+// Set when the evolving Pokemon has no party slot to look up, e.g. one evolving inside the PC.
+static EWRAM_DATA struct Pokemon *sEvoMonOverride = NULL;
 
 COMMON_DATA void (*gCB2_AfterEvolution)(void) = NULL;
 
@@ -169,6 +171,13 @@ static void CB2_BeginEvolutionScene(void)
 #define TASK_BIT_CAN_STOP       (1 << 0)
 #define TASK_BIT_LEARN_MOVE     (1 << 7)
 
+static struct Pokemon *GetEvoMon(u8 partyId)
+{
+    if (sEvoMonOverride != NULL)
+        return sEvoMonOverride;
+    return &gParties[B_TRAINER_PLAYER][partyId];
+}
+
 static void Task_BeginEvolutionScene(u8 taskId)
 {
     struct Pokemon *mon = NULL;
@@ -185,7 +194,7 @@ static void Task_BeginEvolutionScene(u8 taskId)
             bool32 canStopEvo;
             u8 partyId;
 
-            mon = &gParties[B_TRAINER_PLAYER][gTasks[taskId].tPartyId];
+            mon = GetEvoMon(gTasks[taskId].tPartyId);
             postEvoSpecies = gTasks[taskId].tPostEvoSpecies;
             canStopEvo = gTasks[taskId].tCanStop;
             partyId = gTasks[taskId].tPartyId;
@@ -204,7 +213,16 @@ void BeginEvolutionScene(struct Pokemon *mon, enum Species postEvoSpecies, bool3
     gTasks[taskId].tPostEvoSpecies = postEvoSpecies;
     gTasks[taskId].tCanStop = canStopEvo;
     gTasks[taskId].tPartyId = partyId;
+    sEvoMonOverride = NULL;
     SetMainCallback2(CB2_BeginEvolutionScene);
+}
+
+// As BeginEvolutionScene, but for a Pokemon that isn't in the player's party,
+// such as one evolving directly inside the PC.
+void BeginEvolutionSceneForMon(struct Pokemon *mon, enum Species postEvoSpecies, bool32 canStopEvo)
+{
+    BeginEvolutionScene(mon, postEvoSpecies, canStopEvo, 0);
+    sEvoMonOverride = mon;
 }
 
 void EvolutionScene(struct Pokemon *mon, enum Species postEvoSpecies, bool32 canStopEvo, u8 partyId)
@@ -314,7 +332,7 @@ static void CB2_EvolutionSceneLoadGraphics(void)
     u8 id;
     enum Species postEvoSpecies;
     u32 personality;
-    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gTasks[sEvoStructPtr->evoTaskId].tPartyId];
+    struct Pokemon *mon = GetEvoMon(gTasks[sEvoStructPtr->evoTaskId].tPartyId);
     bool32 isShiny;
 
     postEvoSpecies = gTasks[sEvoStructPtr->evoTaskId].tPostEvoSpecies;
@@ -653,7 +671,7 @@ enum {
 static void Task_EvolutionScene(u8 taskId)
 {
     u32 var;
-    struct Pokemon *mon = &gParties[B_TRAINER_PLAYER][gTasks[taskId].tPartyId];
+    struct Pokemon *mon = GetEvoMon(gTasks[taskId].tPartyId);
 
     // check if B Button was held, so the evolution gets stopped
     if (gMain.heldKeys == B_BUTTON
@@ -844,6 +862,7 @@ static void Task_EvolutionScene(u8 taskId)
             FreeMonSpritesGfx();
             FREE_AND_SET_NULL(sEvoStructPtr);
             FreeAllWindowBuffers();
+            sEvoMonOverride = NULL;
             SetMainCallback2(gCB2_AfterEvolution);
         }
         break;
@@ -982,9 +1001,14 @@ static void Task_EvolutionScene(u8 taskId)
             if (!gPaletteFade.active)
             {
                 FreeAllWindowBuffers();
-                ShowSelectMovePokemonSummaryScreen(gParties[B_TRAINER_PLAYER], gTasks[taskId].tPartyId,
-                            CB2_EvolutionSceneLoadGraphics,
-                            gMoveToLearn);
+                if (sEvoMonOverride != NULL)
+                    ShowSelectMovePokemonSummaryScreen(sEvoMonOverride, 0,
+                                CB2_EvolutionSceneLoadGraphics,
+                                gMoveToLearn);
+                else
+                    ShowSelectMovePokemonSummaryScreen(gParties[B_TRAINER_PLAYER], gTasks[taskId].tPartyId,
+                                CB2_EvolutionSceneLoadGraphics,
+                                gMoveToLearn);
                 gTasks[taskId].tLearnMoveState++;
             }
             break;
