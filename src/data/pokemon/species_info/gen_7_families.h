@@ -5863,7 +5863,6 @@ const struct SpeciesInfo gSpeciesInfoGen7[] =
         .levelUpLearnset = sKommoOLevelUpLearnset,
         .teachableLearnset = sKommoOTeachableLearnset,
         .formSpeciesIdTable = sKommoOFormSpeciesIdTable,
-        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_JANGMO_O
 
