@@ -4288,6 +4288,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .teachableLearnset = sPalafinTeachableLearnset,
         .formSpeciesIdTable = sPalafinFormSpeciesIdTable,
         .formChangeTable = sPalafinZeroFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_FINIZEN
 
@@ -5645,6 +5646,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sGreatTuskLevelUpLearnset,
         .teachableLearnset = sGreatTuskTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_GREAT_TUSK
 
@@ -5712,6 +5714,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sScreamTailLevelUpLearnset,
         .teachableLearnset = sScreamTailTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_SCREAM_TAIL
 
@@ -5779,6 +5782,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sBruteBonnetLevelUpLearnset,
         .teachableLearnset = sBruteBonnetTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_BRUTE_BONNET
 
@@ -5849,6 +5853,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sFlutterManeLevelUpLearnset,
         .teachableLearnset = sFlutterManeTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_FLUTTER_MANE
 
@@ -5915,6 +5920,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sSlitherWingLevelUpLearnset,
         .teachableLearnset = sSlitherWingTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_SLITHER_WING
 
@@ -5982,6 +5988,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sSandyShocksLevelUpLearnset,
         .teachableLearnset = sSandyShocksTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_SANDY_SHOCKS
 
@@ -6049,6 +6056,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronTreadsLevelUpLearnset,
         .teachableLearnset = sIronTreadsTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_TREADS
 
@@ -6116,6 +6124,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronBundleLevelUpLearnset,
         .teachableLearnset = sIronBundleTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_BUNDLE
 
@@ -6183,6 +6192,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronHandsLevelUpLearnset,
         .teachableLearnset = sIronHandsTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_HANDS
 
@@ -6251,6 +6261,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronJugulisLevelUpLearnset,
         .teachableLearnset = sIronJugulisTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_JUGULIS
 
@@ -6319,6 +6330,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronMothLevelUpLearnset,
         .teachableLearnset = sIronMothTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_MOTH
 
@@ -6386,6 +6398,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronThornsLevelUpLearnset,
         .teachableLearnset = sIronThornsTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_THORNS
 
@@ -6453,6 +6466,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .teachableLearnset = sFrigibaxTeachableLearnset,
         .eggMoveLearnset = sFrigibaxEggMoveLearnset,
         .evolutions = EVOLUTION({EVO_LEVEL, 35, SPECIES_ARCTIBAX}),
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
     [SPECIES_ARCTIBAX] =
@@ -6582,6 +6596,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .teachableLearnset = sBaxcaliburTeachableLearnset,
         .formSpeciesIdTable = sBaxcaliburFormSpeciesIdTable,
         .formChangeTable = sBaxcaliburFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS
@@ -7165,6 +7180,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sRoaringMoonLevelUpLearnset,
         .teachableLearnset = sRoaringMoonTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_ROARING_MOON
 
@@ -7231,6 +7247,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronValiantLevelUpLearnset,
         .teachableLearnset = sIronValiantTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_VALIANT
 
@@ -7434,6 +7451,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sWalkingWakeLevelUpLearnset,
         .teachableLearnset = sWalkingWakeTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_WALKING_WAKE
 
@@ -7500,6 +7518,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronLeavesLevelUpLearnset,
         .teachableLearnset = sIronLeavesTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_LEAVES
 
@@ -8111,6 +8130,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sGougingFireLevelUpLearnset,
         .teachableLearnset = sGougingFireTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_GOUGING_FIRE
 
@@ -8178,6 +8198,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sRagingBoltLevelUpLearnset,
         .teachableLearnset = sRagingBoltTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_RAGING_BOLT
 
@@ -8244,6 +8265,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronBoulderLevelUpLearnset,
         .teachableLearnset = sIronBoulderTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_BOULDER
 
@@ -8311,6 +8333,7 @@ const struct SpeciesInfo gSpeciesInfoGen9[] =
         .isParadox = TRUE,
         .levelUpLearnset = sIronCrownLevelUpLearnset,
         .teachableLearnset = sIronCrownTeachableLearnset,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 #endif //P_FAMILY_IRON_CROWN
 

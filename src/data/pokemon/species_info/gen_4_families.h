@@ -4459,6 +4459,7 @@ const struct SpeciesInfo gSpeciesInfoGen4[] =
         .teachableLearnset = sGarchompTeachableLearnset,
         .formSpeciesIdTable = sGarchompFormSpeciesIdTable,
         .formChangeTable = sGarchompFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
 #if P_MEGA_EVOLUTIONS

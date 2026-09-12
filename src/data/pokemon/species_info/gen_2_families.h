@@ -8454,6 +8454,7 @@ const struct SpeciesInfo gSpeciesInfoGen2[] =
         .teachableLearnset = sTyranitarTeachableLearnset,
         .formSpeciesIdTable = sTyranitarFormSpeciesIdTable,
         .formChangeTable = sTyranitarFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
 #if P_MEGA_EVOLUTIONS

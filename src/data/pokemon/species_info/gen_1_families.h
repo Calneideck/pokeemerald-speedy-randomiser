@@ -20521,6 +20521,7 @@ const struct SpeciesInfo gSpeciesInfoGen1[] =
         .teachableLearnset = sDragoniteTeachableLearnset,
         .formSpeciesIdTable = sDragoniteFormSpeciesIdTable,
         .formChangeTable = sDragoniteFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
 #if P_GEN_9_MEGA_EVOLUTIONS

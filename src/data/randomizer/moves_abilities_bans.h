@@ -17,6 +17,17 @@ const enum Move RandomizerMovesBans[] = {
     MOVE_PIKA_PAPOW,
     MOVE_STRUGGLE,
     MOVE_HAPPY_HOUR,
+    MOVE_AURA_WHEEL,
+    MOVE_TRUMP_CARD,
+    MOVE_TEATIME,
+    MOVE_ION_DELUGE,
+    MOVE_BLAZING_TORQUE,
+    MOVE_WICKED_TORQUE,
+    MOVE_NOXIOUS_TORQUE,
+    MOVE_COMBAT_TORQUE,
+    MOVE_MAGICAL_TORQUE,
+    MOVE_REVIVAL_BLESSING,
+    MOVE_DOODLE,
 };
 
 // Bans abilities from the randomizer
@@ -24,4 +35,7 @@ const enum Ability RandomizerAbilitiesBans[] = {
 	ABILITY_HUGE_POWER,
 	ABILITY_PURE_POWER,
 	ABILITY_WONDER_GUARD,
+    ABILITY_PLUS,
+    ABILITY_MINUS,
+    ABILITY_TERA_SHIFT,
 };

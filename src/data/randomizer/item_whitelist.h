@@ -513,7 +513,7 @@ static const u16 sRandomizerItemWhitelist[] =
     // ITEM_CLEANSE_TAG,
     // ITEM_SMOKE_BALL,
     ITEM_FOCUS_BAND,
-    ITEM_LUCKY_EGG,
+    //ITEM_LUCKY_EGG,
     ITEM_SCOPE_LENS,
     ITEM_LEFTOVERS,
     ITEM_SHELL_BELL,

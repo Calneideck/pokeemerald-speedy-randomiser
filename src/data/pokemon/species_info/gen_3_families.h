@@ -11813,6 +11813,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sSalamenceTeachableLearnset,
         .formSpeciesIdTable = sSalamenceFormSpeciesIdTable,
         .formChangeTable = sSalamenceFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -12114,6 +12115,7 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sMetagrossTeachableLearnset,
         .formSpeciesIdTable = sMetagrossFormSpeciesIdTable,
         .formChangeTable = sMetagrossFormChangeTable,
+        .perfectIVCount = LEGENDARY_PERFECT_IV_COUNT,
     },
 
 #if P_MEGA_EVOLUTIONS
@@ -13479,7 +13481,6 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sDeoxysAttackTeachableLearnset,
         .formSpeciesIdTable = sDeoxysFormSpeciesIdTable,
         .formChangeTable = sDeoxysAttackFormChangeTable,
-        .randomizerMode = MON_RANDOMIZER_INVALID
     },
 
     [SPECIES_DEOXYS_DEFENSE] =
@@ -13559,7 +13560,6 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sDeoxysDefenseTeachableLearnset,
         .formSpeciesIdTable = sDeoxysFormSpeciesIdTable,
         .formChangeTable = sDeoxysDefenseFormChangeTable,
-        .randomizerMode = MON_RANDOMIZER_INVALID
     },
 
     [SPECIES_DEOXYS_SPEED] =
@@ -13640,7 +13640,6 @@ const struct SpeciesInfo gSpeciesInfoGen3[] =
         .teachableLearnset = sDeoxysSpeedTeachableLearnset,
         .formSpeciesIdTable = sDeoxysFormSpeciesIdTable,
         .formChangeTable = sDeoxysSpeedFormChangeTable,
-        .randomizerMode = MON_RANDOMIZER_INVALID
     },
 #endif //P_FAMILY_DEOXYS
 
