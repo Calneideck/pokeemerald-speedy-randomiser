@@ -791,11 +791,11 @@ static bool8 TryStartStepCountScript(u16 metatileBehavior)
         //     ScriptContext_SetupScript(Route119_EventScript_ScottWonAtFortreeGymCall);
         //     return TRUE;
         // }
-        if (ShouldDoScottBattleFrontierCall() == TRUE)
-        {
-            ScriptContext_SetupScript(LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall);
-            return TRUE;
-        }
+        // if (ShouldDoScottBattleFrontierCall() == TRUE)
+        // {
+        //     ScriptContext_SetupScript(LittlerootTown_ProfessorBirchsLab_EventScript_ScottAboardSSTidalCall);
+        //     return TRUE;
+        // }
         // if (ShouldDoRoxanneCall() == TRUE)
         // {
         //     ScriptContext_SetupScript(RustboroCity_Gym_EventScript_RegisterRoxanne);

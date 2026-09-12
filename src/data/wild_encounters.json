@@ -5942,7 +5942,7 @@
           "fishing_mons": {
             "encounter_rate": 30,
             "mons": [
-             {
+              {
                 "min_level": 35,
                 "max_level": 35,
                 "species": "SPECIES_METANG"
